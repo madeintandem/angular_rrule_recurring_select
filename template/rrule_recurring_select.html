@@ -1,0 +1,52 @@
+<div class="rrule-recurring-select">
+  <h3>Repeat</h3>
+
+  <div class="frequency-type">
+    <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" required>
+    </select>
+  </div>
+
+  <div class="interval">
+    Every <input type="text" ng-model="interval" /> {{selectedFrequency.type}}(s):
+  </div>
+
+  <div class="weekly" ng-if="selectedFrequency.type == 'week'">
+    <ul>
+      <li ng-repeat="day in weekDays" ng-class="{ selected: selected }">
+        {{day.name}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="monthly" ng-if="selectedFrequency.type == 'month'">
+    <input type="radio" ng-model="selectedMonthFrequency"  value="day_of_month"/>Day of month
+    <input type="radio" ng-model="selectedMonthFrequency"   value="day_of_week"/>Day of week
+
+    <ul>
+      <li ng-repeat="day in monthDays" ng-if="selectedMonthFrequency == 'day_of_month'">
+        {{day.day}}
+      </li>
+    </ul>
+
+    <ul>
+      <li ng-repeat="week in monthWeeklyDays" ng-if="selectedMonthFrequency == 'day_of_week'">
+        {{$index + 1}}st
+        <ul>
+          <li ng-repeat="day in week">
+            {{ day.name }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <hr />
+
+  <div class="actions">
+    <div class="summary">
+      Summary: {{selectedFrequency.name}}
+    </div>
+    <div class="button ok">Ok</div>
+    <div class="button cancel">Cancel</div>
+  </div>
+</div>

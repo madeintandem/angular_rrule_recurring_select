@@ -1,0 +1,19 @@
+.rrule-recurring-select {
+  padding: 10px;
+  display: inline-block;
+  background-color: lightgray;
+  width: auto;
+  border-radius: 8px;
+}
+
+.rrule-recurring-select .actions .button {
+  text-align: center;
+  float: left;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid darkgray;
+}
+
+.rrule-recurring-select .actions .summary {
+  clear: both;
+}
