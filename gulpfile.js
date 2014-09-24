@@ -43,6 +43,26 @@ gulp.task('compile', ['vendor', 'app']);
 
 gulp.task('build', ['scss', 'compile', 'template-cache']);
 
+gulp.task('dist:js', ['build'], function() {
+  return gulp.src(['demo/app.js'])
+    .pipe(concat('rrule_recurring_select.js'))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('dist:js_with_template', ['build'], function() {
+  return gulp.src(['demo/app.js', 'demo/templates.js'])
+    .pipe(concat('rrule_recurring_select_templates.js'))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('dist:css', ['scss'], function() {
+  return gulp.src(['demo/css/demo.css'])
+    .pipe(concat('rrule_recurring_select.css'))
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('dist', ['dist:js', 'dist:js_with_template', 'dist:css']);
+
 gulp.task('watch', function () {
   gulp.watch('lib/**/*.js', ['compile']);
   gulp.watch('bower_components/**/*.js', ['compile']);
