@@ -28,7 +28,7 @@ module.exports = function(config) {
         //stripPrefix: "source/path/to/templates/.*/",
         // prependPrefix: "web/path/to/templates/",
         cacheIdFromPath: function(filepath) {
-          var path = filepath.match(/(\/template\/.*$)/)[0];
+          var path = filepath.match(/(template\/.*$)/)[0];
           console.log("cached filepath: " + path);
           return path;
         },
