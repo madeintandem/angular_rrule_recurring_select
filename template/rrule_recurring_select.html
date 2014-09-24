@@ -19,8 +19,8 @@
   </div>
 
   <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == 'month'">
-    <input type="radio" ng-model="selectedMonthFrequency" ng-change="resetData()" value="day_of_month"/>Day of month
-    <input type="radio" ng-model="selectedMonthFrequency" ng-change="resetData()" value="day_of_week"/>Day of week
+    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_month')" value="day_of_month"/>Day of month
+    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week
 
     <ul class="month-days">
       <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }" ng-if="selectedMonthFrequency == 'day_of_month'">
@@ -31,7 +31,7 @@
     <ul class="month-week-days">
       <li ng-repeat="week in monthWeeklyDays" ng-if="selectedMonthFrequency == 'day_of_week'">
         <ul class="week-days">
-          <li class="week-index-title">{{$index + 1}}st</li>
+          <li class="week-index-title">{{$index + 1}}{{weekOrdinals[$index]}}</li>
           <li ng-repeat="day in week" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
             {{ day.name }}
           </li>
@@ -49,7 +49,8 @@
         {{ recurrenceRule.toText() }}
       </div>
     </div>
-    <div class="button ok">Ok</div>
-    <div class="button cancel">Cancel</div>
+
+    <div class="button ok" ng-if="showButtons" ng-click="okClick">Ok</div>
+    <div class="button cancel" ng-if="showButtons" ng-click="cancelClick">Cancel</div>
   </div>
 </div>
