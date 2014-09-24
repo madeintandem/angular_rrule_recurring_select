@@ -25,6 +25,11 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-sinon": "^1.0.3",
     "chai": "~1.9.1",
-    "karma-chai": "~0.1.0"
+    "karma-chai": "~0.1.0",
+    "gulp": "^3.8.6",
+    "gulp-concat": "^2.3.3",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^0.7.2",
+    "gulp-util": "^2.2.16"
   }
 }

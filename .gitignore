@@ -1,2 +1,7 @@
 bower_components
 node_modules
+
+demo/app.js
+demo/vendor.js
+demo/templates.js
+demo/css/*.css
