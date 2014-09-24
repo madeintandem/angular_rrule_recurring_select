@@ -9,9 +9,11 @@ module.exports = function(config) {
       '../bower_components/angular/angular.js',
       '../bower_components/moment/moment.js',
       '../bower_components/rrule/lib/rrule.js',
+      '../bower_components/rrule/lib/nlp.js',
       '../bower_components/angular-mocks/angular-mocks.js',
       '../bower_components/lodash/dist/lodash.js',
       '../lib/rrule_recurring_select.js',
+      './support/spec_helper.js',
       './unit/**/*_spec.js',
       '../template/*.html'
     ],

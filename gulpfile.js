@@ -18,7 +18,8 @@ gulp.task('vendor', function() {
     "bower_components/angular/angular.js",
     "bower_components/moment/moment.js",
     "bower_components/lodash/dist/lodash.js",
-    "bower_components/rrule/lib/rrule.js"
+    "bower_components/rrule/lib/rrule.js",
+    "bower_components/rrule/lib/nlp.js"
   ];
 
   return gulp.src(vendorFiles)
@@ -46,6 +47,7 @@ gulp.task('watch', function () {
   gulp.watch('lib/**/*.js', ['compile']);
   gulp.watch('bower_components/**/*.js', ['compile']);
   gulp.watch('demo/scss/*.scss', ['scss']);
+  gulp.watch('template/*.html', ['template-cache']);
 });
 
 gulp.task('default', ['build', 'watch']);

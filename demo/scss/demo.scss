@@ -1,12 +1,113 @@
-$lightgray: lightgray;
-$darkgray: darkgray;
+$light-gray: #f6f6f6;
+$dark-gray: #BBBDBF;
+$white: #ffffff;
+$smoke-gray: #929497;
 
 .rrule-recurring-select {
   padding: 10px;
   display: inline-block;
-  background-color: $lightgray;
+  background-color: $light-gray;
   width: auto;
   border-radius: 8px;
+  box-shadow: 0 5px 15px;
+  width: 259px;
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .frequency-type, .interval {
+    margin: 8px 0;
+  }
+
+  .weekly {
+    ul {
+      li {
+        display: inline-block;
+        background-color: $white;
+        cursor: pointer;
+        width: 25px;
+        height: 20px;
+        padding: 5px;
+        font-weight: bold;
+        text-align: center;
+        border: 1px solid $dark-gray;
+
+        &.selected {
+          background-color: $smoke-gray;
+        }
+      }
+    }
+  }
+
+  .monthly {
+    &.day_of_month {
+      height: 198px;
+    }
+
+    &.day_of_week {
+      height: 165px;
+    }
+
+    ul.month-days {
+
+      li {
+        display: inline-block;
+        background-color: $white;
+        cursor: pointer;
+        width: 25px;
+        height: 20px;
+        padding: 5px;
+        font-weight: bold;
+        text-align: center;
+        border: 1px solid $dark-gray;
+        float: left;
+
+        &:last-child {
+          width: 136px;
+        }
+
+        &.selected {
+          background-color: $smoke-gray;
+        }
+      }
+    }
+
+    ul.month-week-days {
+      width: 259px;
+
+      li {
+        .week-days {
+
+          li {
+            float: left;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            background-color: $white;
+            cursor: pointer;
+
+            padding: 5px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid $dark-gray;
+
+            &.week-index-title {
+              width: 24px;
+              background-color: $light-gray;
+              border: none;
+              font-weight: normal;
+            }
+
+            &.selected {
+              background-color: $smoke-gray;
+            }
+          }
+        }
+      }
+    }
+  }
 
   .actions {
     .button {
@@ -14,11 +115,14 @@ $darkgray: darkgray;
       float: left;
       margin-right: 10px;
       padding: 10px;
-      border: 1px solid $darkgray;
+      border: 1px solid $dark-gray;
+      width: 37%;
     }
 
     .summary {
+      font-weight: bold;
       clear: both;
+      padding: 10px;
     }
   }
 }
