@@ -1,5 +1,5 @@
 {
-  "name": "angular_rrule_recurring_select",
+  "name": "angular-rrule-recurring-select",
   "description": "Angular directive to select recurrence rule pattern powered by RRule.js",
   "version": "1.0.0",
   "homepage": "https://github.com/devmynd/angular_rrule_recurring_select",
