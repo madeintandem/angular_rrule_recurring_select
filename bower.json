@@ -10,6 +10,9 @@
   ],
   "ignore": [
     "/.*",
+    "lib",
+    "demo",
+    "template",
     "package.json",
     "gulpfile.js",
     "server.js",
