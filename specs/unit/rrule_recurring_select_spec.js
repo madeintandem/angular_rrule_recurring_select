@@ -197,6 +197,21 @@ describe("ActivityChart Directive", function() {
         expect(day.selected).to.equal(true);
       });
     });
+
+    describe("#calculateRRule", function() {
+      var rule = new RRule({ freq: RRule.DAILY });
+
+      beforeEach(function() {
+        stub(directiveScope, 'calculateDailyRRule');
+        directiveScope.selectedFrequency = { type: 'day' };
+        directiveScope.recurrenceRule = rule;
+        directiveScope.calculateRRule();
+      });
+
+      it("does not set the rule", function() {
+        expect(directiveScope.rule).to.eql(undefined);
+      });
+    });
   });
 
   describe("with a rule passed in", function() {
@@ -246,6 +261,14 @@ describe("ActivityChart Directive", function() {
         stub(directiveScope, 'calculateWeeklyRRule');
         stub(directiveScope, 'calculateMonthlyRRule');
         stub(directiveScope, 'calculateYearlyRRule');
+      });
+
+      it("sets the rule even if the rule is an empty string", function() {
+        var rule = new RRule({ freq: RRule.DAILY });
+        directiveScope.rule = '';
+        directiveScope.recurrenceRule = rule;
+        directiveScope.calculateRRule();
+        expect(directiveScope.rule).to.equal(rule.toString());
       });
 
       it("always sets the rule based on the calculated RRule", function() {
