@@ -35,7 +35,7 @@ gulp.task('app', function() {
 
 gulp.task('template-cache', [], function() {
   return gulp.src(['template/**/*.html'])
-    .pipe(templateCache({ root: 'template' }))
+    .pipe(templateCache({ root: 'template', module: 'rrule.templates', standalone: true }))
     .pipe(gulp.dest('demo'));
 });
 
