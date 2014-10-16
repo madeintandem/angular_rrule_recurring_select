@@ -2,6 +2,38 @@ $light-gray: #f6f6f6;
 $dark-gray: #BBBDBF;
 $white: #ffffff;
 $smoke-gray: #929497;
+$dark-blue: #3c5471;
+
+.container {
+  margin: 0;
+  font-family: "EB Garamond";
+  background-color: $dark-blue;
+  color: $white;
+
+  h1 {
+    background-color: #24282e;
+    margin: 0;
+    padding: 25px;
+  }
+
+  .samples {
+    padding: 25px;
+
+    .sample {
+      float: left;
+      margin: 50px auto;
+      width: 400px;
+
+      .desc {
+        font-size: 18px;
+      }
+
+      .live-edit {
+        width: 300px;
+      }
+    }
+  }
+}
 
 .rrule-recurring-select {
   padding: 10px;
@@ -11,6 +43,7 @@ $smoke-gray: #929497;
   border-radius: 8px;
   box-shadow: 0 5px 15px;
   width: 259px;
+  color: black;
 
   ul {
     list-style-type: none;

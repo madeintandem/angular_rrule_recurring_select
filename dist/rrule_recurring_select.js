@@ -12,11 +12,13 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       scope.init = function() {
         scope.initFrequencies();
         scope.initWeekOrdinals();
-        scope.resetData();
         scope.selectedMonthFrequency = 'day_of_month';
-
+        scope.resetData();
+        scope.$watch(scope.currentRule, scope.ruleChanged);
         if(!_.isEmpty(scope.rule))
           scope.parseRule(scope.rule);
+        else
+          scope.calculateRRule();
       };
 
       scope.initFrequencies = function() {
@@ -60,7 +62,6 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
         scope.interval = '';
-        scope.calculateRRule();
       };
 
       scope.daysOfWeek = function() {
@@ -78,6 +79,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       scope.selectMonthFrequency = function(monthFrequency) {
         scope.selectedMonthFrequency = monthFrequency;
         scope.resetData();
+        scope.calculateRRule();
       };
 
       scope.toggleSelected = function(day) {
@@ -235,6 +237,16 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
             }
           });
         });
+      };
+
+      scope.ruleChanged = function() {
+        if (!_.isEmpty(scope.rule)) {
+          scope.parseRule(scope.rule);
+        }
+      };
+
+      scope.currentRule = function() {
+        return scope.rule;
       };
 
       scope.init();

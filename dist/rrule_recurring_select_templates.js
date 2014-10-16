@@ -12,11 +12,13 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       scope.init = function() {
         scope.initFrequencies();
         scope.initWeekOrdinals();
-        scope.resetData();
         scope.selectedMonthFrequency = 'day_of_month';
-
+        scope.resetData();
+        scope.$watch(scope.currentRule, scope.ruleChanged);
         if(!_.isEmpty(scope.rule))
           scope.parseRule(scope.rule);
+        else
+          scope.calculateRRule();
       };
 
       scope.initFrequencies = function() {
@@ -60,7 +62,6 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
         scope.interval = '';
-        scope.calculateRRule();
       };
 
       scope.daysOfWeek = function() {
@@ -78,6 +79,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       scope.selectMonthFrequency = function(monthFrequency) {
         scope.selectedMonthFrequency = monthFrequency;
         scope.resetData();
+        scope.calculateRRule();
       };
 
       scope.toggleSelected = function(day) {
@@ -237,9 +239,19 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         });
       };
 
+      scope.ruleChanged = function() {
+        if (!_.isEmpty(scope.rule)) {
+          scope.parseRule(scope.rule);
+        }
+      };
+
+      scope.currentRule = function() {
+        return scope.rule;
+      };
+
       scope.init();
     }
   }
 }]);
 
-angular.module("rrule.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("template/rrule_recurring_select.html","<div class=\"rrule-recurring-select\">\n  <h3>Repeat</h3>\n\n  <div class=\"frequency-type\">\n    <select ng-model=\"selectedFrequency\" ng-options=\"frequency as frequency.name for frequency in frequencies\" ng-change=\"resetData()\" required>\n    </select>\n  </div>\n\n  <div class=\"interval\">\n    Every <input type=\"text\" ng-model=\"interval\" ng-change=\"calculateRRule()\" /> {{selectedFrequency.type}}(s):\n  </div>\n\n  <div class=\"weekly\" ng-if=\"selectedFrequency.type == \'week\'\">\n    <ul>\n      <li ng-repeat=\"day in weekDays\" ng-click=\"toggleSelected(day)\" ng-class=\"{ selected: day.selected }\">\n        {{day.name}}\n      </li>\n    </ul>\n  </div>\n\n  <div class=\"monthly {{selectedMonthFrequency}}\" ng-if=\"selectedFrequency.type == \'month\'\">\n    <input type=\"radio\" ng-model=\"selectedMonthFrequency\" ng-click=\"selectMonthFrequency(\'day_of_month\')\" value=\"day_of_month\"/>Day of month\n    <input type=\"radio\" ng-model=\"selectedMonthFrequency\" ng-click=\"selectMonthFrequency(\'day_of_week\')\" value=\"day_of_week\"/>Day of week\n\n    <ul class=\"month-days\">\n      <li ng-repeat=\"day in monthDays\" ng-click=\"toggleSelected(day)\" ng-class=\"{ selected: day.selected }\" ng-if=\"selectedMonthFrequency == \'day_of_month\'\">\n        {{day.day}}\n      </li>\n    </ul>\n\n    <ul class=\"month-week-days\">\n      <li ng-repeat=\"week in monthWeeklyDays\" ng-if=\"selectedMonthFrequency == \'day_of_week\'\">\n        <ul class=\"week-days\">\n          <li class=\"week-index-title\">{{$index + 1}}{{weekOrdinals[$index]}}</li>\n          <li ng-repeat=\"day in week\" ng-click=\"toggleSelected(day)\" ng-class=\"{ selected: day.selected }\">\n            {{ day.name }}\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </div>\n\n  <div class=\"actions\">\n    <hr />\n\n    <div class=\"summary\">\n      Summary: {{selectedFrequency.name}}\n      <div class=\"description\">\n        {{ recurrenceRule.toText() }}\n      </div>\n    </div>\n\n    <div class=\"button ok\" ng-if=\"showButtons\" ng-click=\"okClick\">Ok</div>\n    <div class=\"button cancel\" ng-if=\"showButtons\" ng-click=\"cancelClick\">Cancel</div>\n  </div>\n</div>\n");}]);
+angular.module("rrule.templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("template/rrule_recurring_select.html","<div class=\"rrule-recurring-select\">\n  <h3>Repeat</h3>\n\n  <div class=\"frequency-type\">\n    <select ng-model=\"selectedFrequency\" ng-options=\"frequency as frequency.name for frequency in frequencies\" ng-change=\"resetData()\" required>\n    </select>\n  </div>\n\n  <div class=\"interval\">\n    Every <input type=\"text\" ng-model=\"interval\" ng-change=\"calculateRRule()\" /> {{selectedFrequency.type}}(s):\n  </div>\n\n  <div class=\"weekly\" ng-if=\"selectedFrequency.type == \'week\'\">\n    <ul>\n      <li ng-repeat=\"day in weekDays\" ng-click=\"toggleSelected(day)\" ng-class=\"{ selected: day.selected }\">\n        {{day.name}}\n      </li>\n    </ul>\n  </div>\n\n  <div class=\"monthly {{selectedMonthFrequency}}\" ng-if=\"selectedFrequency.type == \'month\'\">\n    <input type=\"radio\" ng-model=\"selectedMonthFrequency\" ng-click=\"selectMonthFrequency(\'day_of_month\')\" value=\"day_of_month\"/>Day of month\n    <input type=\"radio\" ng-model=\"selectedMonthFrequency\" ng-click=\"selectMonthFrequency(\'day_of_week\')\" value=\"day_of_week\"/>Day of week\n\n    <ul class=\"month-days\">\n      <li ng-repeat=\"day in monthDays\" ng-click=\"toggleSelected(day)\" ng-class=\"{ selected: day.selected }\" ng-if=\"selectedMonthFrequency == \'day_of_month\'\">\n        {{day.day}}\n      </li>\n    </ul>\n\n    <ul class=\"month-week-days\">\n      <li ng-repeat=\"week in monthWeeklyDays\" ng-if=\"selectedMonthFrequency == \'day_of_week\'\">\n        <ul class=\"week-days\">\n          <li class=\"week-index-title\">{{$index + 1}}{{weekOrdinals[$index]}}</li>\n          <li ng-repeat=\"day in week\" ng-click=\"toggleSelected(day)\" ng-class=\"{ selected: day.selected }\">\n            {{ day.name }}\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </div>\n\n  <div class=\"actions\">\n    <hr />\n\n    <div class=\"summary\">\n      Summary: {{selectedFrequency.name}}\n      <div class=\"description\">\n        {{ recurrenceRule.toText() }}\n      </div>\n    </div>\n\n    <div class=\"button ok\" ng-if=\"showButtons\" ng-click=\"okClick()\">Ok</div>\n    <div class=\"button cancel\" ng-if=\"showButtons\" ng-click=\"cancelClick()\">Cancel</div>\n  </div>\n</div>\n");}]);

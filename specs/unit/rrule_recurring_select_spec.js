@@ -23,14 +23,51 @@ describe("ActivityChart Directive", function() {
     describe("#init", function() {
       beforeEach(function() {
         directiveScope.selectedMonthFrequency = '';
+        stub(directiveScope, '$watch');
         stub(directiveScope, 'resetData');
         stub(directiveScope, 'initFrequencies');
+        stub(directiveScope, 'initWeekOrdinals');
         stub(directiveScope, 'parseRule');
+        stub(directiveScope, 'calculateRRule');
         directiveScope.init();
       });
 
-      it("does not call parse rule", function() {
-        expect(directiveScope.parseRule.called).to.be.false;
+      it("sets up a watcher to determine if rule changed externally", function() {
+        expect(directiveScope.$watch.calledWith(directiveScope.currentRule, directiveScope.ruleChanged)).to.be.true;
+      });
+
+      describe("no initial rule", function() {
+        beforeEach(function() {
+          directiveScope.parseRule.reset();
+          directiveScope.calculateRRule.reset();
+          directiveScope.rule = undefined;
+          directiveScope.init();
+        });
+
+        it("does not call parse rule", function() {
+          expect(directiveScope.parseRule.called).to.be.false;
+        });
+
+        it("calculates rrule", function() {
+          expect(directiveScope.calculateRRule.called).to.be.true;
+        });
+      });
+
+      describe("with initial rule", function() {
+        beforeEach(function() {
+          directiveScope.parseRule.reset();
+          directiveScope.calculateRRule.reset();
+          directiveScope.rule = 'FREQ=DAILY;INTERVAL=1;WKST=SU';
+          directiveScope.init();
+        });
+
+        it("calls parse rule", function() {
+          expect(directiveScope.parseRule.called).to.be.true;
+        });
+
+        it("does not try to calculate rrule", function() {
+          expect(directiveScope.calculateRRule.called).to.be.false;
+        });
       });
 
       it("resets the data", function() {
@@ -43,6 +80,10 @@ describe("ActivityChart Directive", function() {
 
       it("initializes the frequency options", function() {
         expect(directiveScope.initFrequencies.called).to.be.true;
+      });
+
+      it("initializes the week ordinals", function() {
+        expect(directiveScope.initWeekOrdinals.called).to.be.true;
       });
     });
 
@@ -243,6 +284,7 @@ describe("ActivityChart Directive", function() {
       beforeEach(function() {
         directiveScope.selectedMonthFrequency = 'day_of_week';
         stub(directiveScope, 'resetData');
+        stub(directiveScope, 'calculateRRule');
         directiveScope.selectMonthFrequency('day_of_month');
       });
 
@@ -252,6 +294,10 @@ describe("ActivityChart Directive", function() {
 
       it("resets the data", function() {
         expect(directiveScope.resetData.called).to.be.true;
+      });
+
+      it("calculates the RRule", function() {
+        expect(directiveScope.calculateRRule.called).to.be.true;
       });
     });
 
@@ -1075,6 +1121,41 @@ describe("ActivityChart Directive", function() {
             expect(directiveScope.interval).to.eql(2);
           });
         });
+      });
+    });
+
+    describe("#ruleChanged", function() {
+      describe("with rule", function() {
+        beforeEach(function() {
+          directiveScope.rule = 'FREQ=YEARLY;INTERVAL=2;BYYEARDAY=1';
+          stub(directiveScope, 'parseRule');
+          directiveScope.ruleChanged();
+        });
+
+        it("parses the rule", function() {
+          expect(directiveScope.parseRule.called).to.be.true;
+        });
+      });
+
+      describe("without rule", function() {
+        beforeEach(function() {
+          directiveScope.rule = '';
+          stub(directiveScope, 'parseRule');
+          directiveScope.ruleChanged();
+        });
+
+        it("does not parse the rule", function() {
+          expect(directiveScope.parseRule.called).to.be.false;
+        });
+      });
+    });
+
+    describe("#currentRule", function() {
+      var rule = 'FREQ=YEARLY;INTERVAL=2;BYYEARDAY=1';
+
+      it("returns the current scope rule", function() {
+        directiveScope.rule = rule;
+        expect(directiveScope.currentRule()).to.eql(rule);
       });
     });
   });
