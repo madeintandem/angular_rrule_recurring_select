@@ -83,6 +83,10 @@
         font-weight: normal; }
       .rrule-recurring-select .monthly ul.month-week-days li .week-days li.selected {
         background-color: #929497; }
+  .rrule-recurring-select .yearly ul.year-months li.year-month {
+    display: inline-block; }
+  .rrule-recurring-select .yearly ul.year-month-days li.year-month-day {
+    display: inline-block; }
   .rrule-recurring-select .actions .button {
     text-align: center;
     float: left;

@@ -686,34 +686,84 @@ describe("ActivityChart Directive", function() {
 
     describe("#calculateYearlyRRule", function() {
       describe("every year", function() {
-        beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
-          directiveScope.interval = '';
-          directiveScope.calculateYearlyRRule();
+        describe("on one month and day", function() {
+          beforeEach(function() {
+            directiveScope.recurrenceRule = undefined;
+            directiveScope.interval = '';
+            directiveScope.yearMonths[7].selected = true;
+            directiveScope.monthDays[24].selected = true;
+            directiveScope.calculateYearlyRRule();
+          });
+
+          it("can grab text description from RRule", function() {
+            expect(directiveScope.recurrenceRule.toText()).to.eql('every August on the 25th');
+          });
+
+          it("has the correct iCal string from RRule", function() {
+            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYMONTH=8;BYMONTHDAY=25');
+          });
         });
 
-        it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every year on the 1st day');
-        });
+        describe("multiple months and days", function() {
+          beforeEach(function() {
+            directiveScope.recurrenceRule = undefined;
+            directiveScope.interval = '';
+            directiveScope.yearMonths[4].selected = true;
+            directiveScope.yearMonths[7].selected = true;
+            directiveScope.monthDays[6].selected = true;
+            directiveScope.monthDays[24].selected = true;
 
-        it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYYEARDAY=1');
+            directiveScope.calculateYearlyRRule();
+          });
+
+          it("can grab text description from RRule", function() {
+            expect(directiveScope.recurrenceRule.toText()).to.eql('every May and August on the 25th and 7th');
+          });
+
+          it("has the correct iCal string from RRule", function() {
+            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYMONTH=5,8;BYMONTHDAY=7,25');
+          });
         });
       });
 
       describe("every 2 years", function() {
-        beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
-          directiveScope.interval = 2;
-          directiveScope.calculateYearlyRRule();
+        describe("on one month and day", function() {
+          beforeEach(function() {
+            directiveScope.recurrenceRule = undefined;
+            directiveScope.interval = 2;
+            directiveScope.yearMonths[7].selected = true;
+            directiveScope.monthDays[24].selected = true;
+            directiveScope.calculateYearlyRRule();
+          });
+
+          it("can grab text description from RRule", function() {
+            expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 years August on the 25th');
+          });
+
+          it("has the correct iCal string from RRule", function() {
+            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYMONTH=8;BYMONTHDAY=25');
+          });
         });
 
-        it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 years on the 1st day');
-        });
+        describe("multiple months and days", function() {
+          beforeEach(function() {
+            directiveScope.recurrenceRule = undefined;
+            directiveScope.interval = 2;
+            directiveScope.yearMonths[4].selected = true;
+            directiveScope.yearMonths[7].selected = true;
+            directiveScope.monthDays[6].selected = true;
+            directiveScope.monthDays[24].selected = true;
 
-        it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYYEARDAY=1');
+            directiveScope.calculateYearlyRRule();
+          });
+
+          it("can grab text description from RRule", function() {
+            expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 years May and August on the 25th and 7th');
+          });
+
+          it("has the correct iCal string from RRule", function() {
+            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYMONTH=5,8;BYMONTHDAY=7,25');
+          });
         });
       });
     });

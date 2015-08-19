@@ -30,6 +30,7 @@
     "gulp-concat": "^2.3.3",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.2",
-    "gulp-util": "^2.2.16"
+    "gulp-util": "^2.2.16",
+    "gulp-angular-templatecache": "^1.7.0"
   }
 }
