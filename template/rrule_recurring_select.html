@@ -40,6 +40,25 @@
     </ul>
   </div>
 
+  <div class="yearly" ng-if="selectedFrequency.type == 'year'">
+    <label for="yearMonth">Months: </label>
+    <ul class='year-months'>
+      <li ng-repeat="yearMonth in yearMonths" class="year-month">
+        <input type="checkbox" value="yearMonth.value" ng-checked="yearMonth.selected" ng-click="toggleSelected(yearMonth)" id="year-month-{{yearMonth.value}}">
+        <label for="year-month-{{yearMonth.value}}">{{ yearMonth.name }}</label>
+      </li>
+    </ul>
+    <!-- <select name="yearMonth" ng-model="selectedYearMonth" ng-options="yearMonth as yearMonth.name for yearMonth in yearMonths track by yearMonth.value" ng-change="calculateRRule()" required></select> -->
+    <br />
+    <label for="yearMonthDay">Day of Month: </label>
+     <ul class='year-month-days'>
+      <li ng-repeat="monthDay in yearMonthDays" class="year-month-day">
+        <input type="checkbox" value="monthDay.value" ng-checked="monthDay.selected" ng-click="toggleSelected(monthDay)" id="year-month-day-{{monthDay.value}}">
+        <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>
+      </li>
+    </ul>
+  </div>
+
   <div class="actions">
     <hr />
 
