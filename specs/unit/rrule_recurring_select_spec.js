@@ -443,6 +443,10 @@ describe("ActivityChart Directive", function() {
           directiveScope.calculateHourlyRRule();
         });
 
+        it("can grab text description from RRule", function() {
+          expect(directiveScope.recurrenceRule.toText()).to.eql('every hour');
+        });
+
         it("has the correct iCal string from RRule", function() {
           expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=HOURLY;INTERVAL=1;WKST=SU');
         });
@@ -453,6 +457,10 @@ describe("ActivityChart Directive", function() {
           directiveScope.recurrenceRule = undefined;
           directiveScope.interval = 2;
           directiveScope.calculateHourlyRRule();
+        });
+
+        it("can grab text description from RRule", function() {
+          expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 hours');
         });
 
         it("has the correct iCal string from RRule", function() {
@@ -507,8 +515,12 @@ describe("ActivityChart Directive", function() {
           directiveScope.calculateDailyRRule();
         });
 
+        it("can grab text description from RRule", function() {
+          expect(directiveScope.recurrenceRule.toText()).to.eql('every day at 10 and 17');
+        });
+
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;BYHOUR=10,17;WKST=SU');
+          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=10,17');
         });
       });
 
