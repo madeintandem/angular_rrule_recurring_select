@@ -60,7 +60,7 @@ $dark-blue: #3c5471;
         display: inline-block;
         background-color: $white;
         cursor: pointer;
-        width: 25px;
+        min-width: 25px;
         height: 20px;
         padding: 5px;
         font-weight: bold;

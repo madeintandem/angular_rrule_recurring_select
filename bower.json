@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "homepage": "https://github.com/devmynd/angular_rrule_recurring_select",
   "main": [
-    "dist/rrule_recurring_select.js",
     "dist/rrule_recurring_select_templates.js",
     "dist/rrule_recurring_select.css"
   ],

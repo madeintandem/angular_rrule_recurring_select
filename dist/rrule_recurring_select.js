@@ -13,6 +13,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.initFrequencies();
         scope.initWeekOrdinals();
         scope.selectedMonthFrequency = 'day_of_month';
+        scope.hideActions = typeof attrs['hideActions'] !== 'undefined';
         scope.resetData();
         scope.$watch(scope.currentRule, scope.ruleChanged);
         if(!_.isEmpty(scope.rule))
@@ -37,7 +38,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.yearMonthDays = [];
 
         _.times(31, function(index) {
-          var day = { day: index + 1, value: index + 1, selected: false }
+          var day = { day: index + 1, value: index + 1, selected: false };
           scope.monthDays.push(day);
           scope.yearMonthDays.push(day);
         });
@@ -63,7 +64,8 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       };
 
       scope.resetData = function() {
-        scope.hours = scope.hoursOfDay();
+        var hoursFunc = attrs['hoursFunc'] || 'hoursOfDay';
+        scope.hours = scope[hoursFunc]();
         scope.weekDays = scope.daysOfWeek();
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
@@ -91,6 +93,15 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
           hoursArray.push({value:i, name: i.toString(), selected:false});
         }
         return hoursArray;
+      };
+
+      scope.medSlots = function() {
+        return [
+          { name: 'Morning', value: 7, selected: false },
+          { name: 'Lunch', value: 12, selected: false },
+          { name: 'Afternoon', value: 17, selected: false },
+          { name: 'Night', value: 22, selected: false }
+        ];
       };
 
       scope.initYearlyMonths = function() {
@@ -159,16 +170,19 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       };
 
       scope.calculateDailyRRule = function() {
+        var ruleOptions = {
+          freq: RRule.DAILY,
+          interval: scope.calculateInterval(),
+          wkst: RRule.SU
+        };
+
         var selectedHours = _(scope.hours).select(function(hour) {
           return hour.selected;
         }).pluck('value').value();
-
-        scope.recurrenceRule = new RRule({
-          freq: RRule.DAILY,
-          interval: scope.calculateInterval(),
-          byhour: selectedHours,
-          wkst: RRule.SU
-        });
+        if (selectedHours.length > 0) {
+          ruleOptions.byhour = selectedHours;
+        }
+        scope.recurrenceRule = new RRule(ruleOptions);
       };
 
       scope.calculateWeeklyRRule = function() {

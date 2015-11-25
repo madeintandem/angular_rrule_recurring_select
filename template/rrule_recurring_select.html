@@ -1,16 +1,18 @@
 <div class="rrule-recurring-select">
   <h3>Repeat</h3>
 
-  <div class="frequency-type">
-    <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="resetData()" required>
-    </select>
+  <div class="frequency-controls">
+    <div class="frequency-type">
+      <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="resetData()" required>
+      </select>
+    </div>
+
+    <div class="interval">
+      Every <input type="text" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}(s):
+    </div>
   </div>
 
-  <div class="interval">
-    Every <input type="text" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}(s):
-  </div>
-
-  <div class="daily" ng-if="selectedFrequency.type == 'day'">
+  <div class="daily rrs-toggle" ng-if="selectedFrequency.type == 'day'">
     <ul>
       <li ng-repeat="hour in hours" ng-click="toggleSelected(hour)" ng-class="{ selected: hour.selected }">
         {{hour.name}}
@@ -18,7 +20,7 @@
     </ul>
   </div>
 
-  <div class="weekly" ng-if="selectedFrequency.type == 'week'">
+  <div class="weekly rrs-toggle" ng-if="selectedFrequency.type == 'week'">
     <ul>
       <li ng-repeat="day in weekDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
         {{day.name}}
@@ -67,7 +69,7 @@
     </ul>
   </div>
 
-  <div class="actions">
+  <div ng-if="!hideActions" class="actions">
     <hr />
 
     <div class="summary">
