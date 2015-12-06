@@ -1,9 +1,9 @@
 <div class="rrule-recurring-select">
-  <h3>Repeat</h3>
+  <h3 ng-hide="compact">Repeat</h3>
 
   <div class="frequency-controls">
     <div class="frequency-type">
-      <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="resetData()" required>
+      <span ng-show="compact">Repeat </span><select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="resetData()" required>
       </select>
     </div>
 
@@ -67,6 +67,26 @@
         <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>
       </li>
     </ul>
+  </div>
+
+  <div class="recurStarts" ng-if="showStart">
+    <div>
+      <label>Starts on</label>
+    </div>
+    <div>
+      <input ng-model="recurrenceRule.options.dtstart" ui-date ui-date-format datepicker-popup-fix>
+    </div>
+  </div>
+
+  <div class="recurEnd" ng-if="showEnd">
+    <div class="recurEndsLabel">
+      <label>Ends</label>
+    </div>
+    <div class="recurEndsOpts">
+      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule()" value="never"> Never</label></div>
+      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule()" value="after"> After</label> <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'"> occurences<div>
+      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule()" value="on"> On</label> <input ng-model="recurEnd.until" class="recurUntilDate" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'on'" ui-date ui-date-format datepicker-popup-fix>
+    </div>
   </div>
 
   <div ng-if="!hideActions" class="actions">

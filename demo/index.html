@@ -5,7 +5,10 @@
 
     <script type="text/javascript">
       angular.module('rrule.templates', []);
-      angular.module('sampleApp', ['rruleRecurringSelect', 'rrule.templates']);
+      angular.module('sampleApp', ['rruleRecurringSelect', 'rrule.templates'])
+      .controller('rruleCtrl', function($scope) {
+        $scope.rule='FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=7,12,17,22;BYSECOND=0;BYMINUTE=0';
+      })
     </script>
 
     <script src="app.js"></script>
@@ -16,7 +19,11 @@
   <body id="ng-app" ng-app="sampleApp">
     <h1>Sample RRule Recurring Select</h1>
     <h2>Meds Slots</h2>
-    <rrule-recurring-select hours-func="medSlots"></rrule-recurring-select>
+    <div ng-controller="rruleCtrl">
+    <rrule-recurring-select hide-actions hours-func="medSlots" compact show-end hours-func="medSlots" rule="rule"></rrule-recurring-select>
+    <p>{{ rule }}</p>
+    <p>Ends : {{ recurEnd.type }}</p>
+    </div>
     <h2>Normal</h2>
     <rrule-recurring-select></rrule-recurring-select>
   </body>

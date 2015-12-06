@@ -520,7 +520,7 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=10,17');
+          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=10,17;BYSECOND=0;BYMINUTE=0');
         });
       });
 

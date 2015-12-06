@@ -23,6 +23,8 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-safari-launcher": "^0.1.1",
     "karma-sinon": "^1.0.3",
+    "karma-mocha-debug": "0.1.2",
+    "mocha": "2.3.4",
     "chai": "~1.9.1",
     "karma-chai": "~0.1.0",
     "gulp": "^3.8.6",
