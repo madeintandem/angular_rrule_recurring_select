@@ -20,7 +20,7 @@
 
   <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == 'month'">
     <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_month')" value="day_of_month"/>Day of month
-    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week
+    <!-- update 1/16/2016 from Matt DuBois: the Monthly - Day of Week rule is broken and sets the recurrence to Monthly- Day of Month on the 15th <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week -->
 
     <ul class="month-days">
       <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }" ng-if="selectedMonthFrequency == 'day_of_month'">
