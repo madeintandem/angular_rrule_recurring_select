@@ -86,14 +86,12 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         var weekDays = ['SU','MO','TU','WE','TH','FR','SA'];
         var retVal = [];
         var startPos = weekDays.indexOf(scope.weekStart);
-        console.log(startPos, scope.weekStart);
         for (var i=startPos; i<7;i++) {
           retVal.push({ name:weekDays[i].slice(0,1), value: RRule[weekDays[i]], selected:false});
         }
         for (i=0; i < startPos; i++) {
           retVal.push({ name:weekDays[i].slice(0,1), value: RRule[weekDays[i]], selected:false});
         }
-        console.log(JSON.stringify(retVal,null,2));
         return retVal;
       };
 
