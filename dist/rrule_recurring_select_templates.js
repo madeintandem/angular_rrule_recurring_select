@@ -107,7 +107,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         return [
           { name: 'Morning', value: 7, selected: false },
           { name: 'Lunch', value: 12, selected: false },
-          { name: 'Afternoon', value: 17, selected: false },
+          { name: 'Teatime', value: 17, selected: false },
           { name: 'Night', value: 22, selected: false }
         ];
       };
