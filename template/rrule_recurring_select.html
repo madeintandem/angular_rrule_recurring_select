@@ -83,9 +83,9 @@
       <label>Ends</label>
     </div>
     <div class="recurEndsOpts">
-      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule()" value="never"> Never</label></div>
-      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule()" value="after"> After</label> <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'"> occurences<div>
-      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule()" value="on"> On</label> <input ng-model="recurEnd.until" class="recurUntilDate" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'on'" ui-date ui-date-format datepicker-popup-fix>
+      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label></div>
+      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label> <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurences<div>
+      <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label> <input ng-model="recurEnd.until" class="recurUntilDate" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'on'" ui-date ui-date-format datepicker-popup-fix>
     </div>
   </div>
 
