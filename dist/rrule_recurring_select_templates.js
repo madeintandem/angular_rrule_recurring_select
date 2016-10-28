@@ -72,6 +72,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         var hoursFunc = attrs['hoursFunc'] || 'hoursOfDay';
         scope.weekStart = attrs['weekStartDay'] || 'SU';
         scope.hours = scope[hoursFunc]();
+        scope.defaultUntil = attrs['defaultUntil'];
         scope.weekDays = scope.daysOfWeek();
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
@@ -149,7 +150,9 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
           case 'on' :
             delete scope.recurEnd.count;
             delete scope.recurrenceRule.options.count;
-            scope.recurEnd.until = scope.recurEnd.until || scope.recurrenceRule.after(new Date(new Date().getTime()+(1000*60*60*24*60)));
+            if (!scope.recurEnd.until) {
+              scope.recurEnd.until = scope.recurrenceRule.after(new Date(scope.defaultUntil ? scope.defaultUntil : new Date().getTime() + (1000 * 60 * 60 * 24 * 60)));
+            }
             break;
         }
 
