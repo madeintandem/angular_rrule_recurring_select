@@ -77,3 +77,5 @@
     font-weight: bold;
     clear: both;
     padding: 10px; }
+  .rrule-recurring-select .recurEnd .recurEndOptions {
+    display: inline-block; }

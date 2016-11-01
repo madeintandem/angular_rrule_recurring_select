@@ -10,6 +10,8 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
     templateUrl: 'template/rrule_recurring_select.html',
     link: function(scope, elem, attrs) {
 
+      var MS_IN_DAY = 1000 * 60 * 60 * 24;
+
       scope.init = function() {
         scope.showStart = typeof attrs['showStart'] !== "undefined";
         scope.showEnd = typeof attrs['showEnd'] !== "undefined";
@@ -151,7 +153,15 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
             delete scope.recurEnd.count;
             delete scope.recurrenceRule.options.count;
             if (!scope.recurEnd.until) {
-              scope.recurEnd.until = scope.recurrenceRule.after(new Date(scope.defaultUntil ? scope.defaultUntil : new Date().getTime() + (1000 * 60 * 60 * 24 * 60)));
+              var defaultRecurEndBase;
+              if (scope.defaultUntil) {
+                defaultRecurEndBase = parseInt(scope.defaultUntil);
+              } else {
+                defaultRecurEndBase = new Date().getTime() + (MS_IN_DAY * 60);
+              }
+              // Go to the beginning of the day to get rid of what you can't see....
+              var ms = defaultRecurEndBase % MS_IN_DAY;
+              scope.recurEnd.until = new Date(defaultRecurEndBase - ms);
             }
             break;
         }
