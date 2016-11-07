@@ -22,6 +22,11 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.hideActions = typeof attrs['hideActions'] !== 'undefined';
         scope.resetData();
         scope.$watch(scope.currentRule, scope.ruleChanged);
+        scope.dateOptions = {};
+        var minUntil = attrs['minUntil'];
+        if (minUntil) {
+          scope.dateOptions.minDate = new Date(parseInt(minUntil));
+        }
         if(!_.isEmpty(scope.rule)) {
           scope.parseRule(scope.rule);
         }
@@ -158,6 +163,9 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
                 defaultRecurEndBase = parseInt(scope.defaultUntil);
               } else {
                 defaultRecurEndBase = new Date().getTime() + (MS_IN_DAY * 60);
+              }
+              if (defaultRecurEndBase < scope.minUntil) {
+                defaultRecurEndBase = scope.minUntil + ONE_DAY;
               }
               // Go to the beginning of the day to get rid of what you can't see....
               var ms = defaultRecurEndBase % MS_IN_DAY;
