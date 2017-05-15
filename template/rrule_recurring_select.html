@@ -85,8 +85,15 @@
         </div>
         <div class="recurEndsOpts">
           <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label></div>
-          <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label> <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurences</div>
-          <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label> <input ng-model="recurEnd.until" class="recurUntilDate" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'on'" ui-date="dateOptions" ui-date-format datepicker-popup-fix></div>
+          <div>
+            <label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label>
+            <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurences
+          </div>
+          <div>
+            <label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label>
+            <input ng-show="recurEnd.type === 'on'" ng-model="recurEnd.until" class="recurUntilDate" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'on'" ui-date="dateOptions" ui-date-format datepicker-popup-fix>
+            <input ng-hide="recurEnd.type === 'on'" disabled>
+          </div>
         </div>
     </div>
     <div class="recurOnText" ng-show="recurEnd.type === 'on'">Enter the date from which there are no further occurences (ie if you want the last occurence to happen on 1st, you should enter 2nd)</div>

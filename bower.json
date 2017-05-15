@@ -19,11 +19,11 @@
     "specs"
   ],
   "dependencies": {
-    "angular": "1.2.x",
-    "angular-mocks": "~1.2.x",
-    "moment": "~2.6.0",
+    "angular": "1.6.4",
+    "angular-mocks": "1.6.4",
+    "moment": "2.18.1",
     "jquery": "1.10.2",
     "lodash": "2.4.1",
-    "rrule": "~2.1.0"
+    "rrule": "git://github.com/reallycare/rrule.git#master"
   }
 }
