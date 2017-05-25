@@ -320,7 +320,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
 
         scope.interval = scope.recurrenceRule.options.interval;
 
-        scope.selectedFrequency = _.select(scope.frequencies, function(frequency) {
+        scope.selectedFrequency = _.filter(scope.frequencies, function(frequency) {
           return frequency.rruleType == scope.recurrenceRule.options.freq;
         })[0];
 
@@ -341,6 +341,20 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
 
       scope.initFromRecurEndRule = function() {
         scope.recurEnd = {};
+        if (!scope.recurEnd.until) {
+          var defaultRecurEndBase;
+          if (scope.defaultUntil) {
+            defaultRecurEndBase = parseInt(scope.defaultUntil);
+          } else {
+            defaultRecurEndBase = new Date().getTime() + (MS_IN_DAY * 60);
+          }
+          if (defaultRecurEndBase < scope.minUntil) {
+            defaultRecurEndBase = scope.minUntil + ONE_DAY;
+          }
+          // Go to the beginning of the day to get rid of what you can't see....
+          var ms = defaultRecurEndBase % MS_IN_DAY;
+          scope.recurEnd.until = new Date(defaultRecurEndBase - ms);
+        }
         if (scope.recurrenceRule.options.until) {
           scope.recurEnd.type = 'on';
           scope.recurEnd.until = scope.recurrenceRule.options.until;
