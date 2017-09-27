@@ -23,7 +23,7 @@
     "angular-mocks": "1.6.4",
     "moment": "2.18.1",
     "jquery": "1.10.2",
-    "lodash": "2.4.1",
+    "lodash": "4.17.4",
     "rrule": "git://github.com/reallycare/rrule.git#master"
   }
 }
