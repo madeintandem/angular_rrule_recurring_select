@@ -24,7 +24,6 @@
     "moment": "2.18.1",
     "jquery": "1.10.2",
     "lodash": "2.4.1",
-    "rrule": "git://github.com/reallycare/rrule.git#master",
-    "reallycare-meds-sessions": "git://github.com/reallycare/medsSessions#master"
+    "rrule": "git://github.com/reallycare/rrule.git#master"
   }
 }
