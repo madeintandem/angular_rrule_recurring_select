@@ -14,6 +14,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
 
       scope.init = function() {
         scope.showStart = typeof attrs['showStart'] !== "undefined";
+        scope.dispStart = attrs['dispStart'];
         scope.showEnd = typeof attrs['showEnd'] !== "undefined";
         scope.compact = typeof attrs['compact'] !== "undefined";
         scope.initFrequencies();
