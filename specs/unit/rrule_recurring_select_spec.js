@@ -95,7 +95,7 @@ describe("ActivityChart Directive", function() {
       });
 
       it("sets up the frequencies", function() {
-        expect(_.pluck(directiveScope.frequencies, 'name')).to.eql(['Hourly', 'Daily', 'Weekly', 'Monthly', 'Yearly']);
+        expect(_.map(directiveScope.frequencies, 'name')).to.eql(['Hourly', 'Daily', 'Weekly', 'Monthly', 'Yearly']);
       });
 
       it("sets the daily frequency as the default", function() {
@@ -110,7 +110,7 @@ describe("ActivityChart Directive", function() {
       });
 
       it("none are selected by default", function() {
-        var noneSelected = _.all(directiveScope.monthDays, function(day) {
+        var noneSelected = _.every(directiveScope.monthDays, function(day) {
           return day.selected == false;
         });
         expect(noneSelected).to.be.true;
@@ -139,14 +139,14 @@ describe("ActivityChart Directive", function() {
 
       it("each week contains 7 days", function() {
         var weeks = directiveScope.monthWeeklyDays;
-        expect(_.all(weeks, function(week) {
+        expect(_.every(weeks, function(week) {
           return week.length == 7;
         })).to.be.true;
       });
 
       it("sets up the first week's day values", function() {
         var firstWeek = directiveScope.monthWeeklyDays[0];
-        var firstWeekValues = _.pluck(firstWeek, 'value');
+        var firstWeekValues = _.map(firstWeek, 'value');
         expect(firstWeekValues).to.eql([
           RRule.SU.nth(1),
           RRule.MO.nth(1),
@@ -160,7 +160,7 @@ describe("ActivityChart Directive", function() {
 
       it("sets up the second week's day values", function() {
         var secondWeek = directiveScope.monthWeeklyDays[1];
-        var secondWeekValues = _.pluck(secondWeek, 'value');
+        var secondWeekValues = _.map(secondWeek, 'value');
         expect(secondWeekValues).to.eql([
           RRule.SU.nth(2),
           RRule.MO.nth(2),
@@ -174,7 +174,7 @@ describe("ActivityChart Directive", function() {
 
       it("sets up the third week's day values", function() {
         var thirdWeek = directiveScope.monthWeeklyDays[2];
-        var thirdWeekValues = _.pluck(thirdWeek, 'value');
+        var thirdWeekValues = _.map(thirdWeek, 'value');
         expect(thirdWeekValues).to.eql([
           RRule.SU.nth(3),
           RRule.MO.nth(3),
@@ -188,7 +188,7 @@ describe("ActivityChart Directive", function() {
 
       it("sets up the last week's day values", function() {
         var lastWeek = _.last(directiveScope.monthWeeklyDays);
-        var lastWeekValues = _.pluck(lastWeek, 'value');
+        var lastWeekValues = _.map(lastWeek, 'value');
         expect(lastWeekValues).to.eql([
           RRule.SU.nth(4),
           RRule.MO.nth(4),
