@@ -25,7 +25,7 @@
     "jquery": "1.10.2",
     "lodash": "4.17.4",
     "rrule": "git://github.com/reallycare/rrule.git#master",
-    "fng-bootstrap-datetime": "^0.11.0",
+    "fng-bootstrap-datetime": "^0.11",
     "angular-ui-bootstrap-bower": "2.5.0"
   }
 }
