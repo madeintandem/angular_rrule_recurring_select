@@ -84,15 +84,15 @@
           <label>Ends</label>
         </div>
         <div class="recurEndsOpts">
-          <div><label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label></div>
+          <div><label><input id="re-never" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label></div>
           <div>
-            <label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label>
+            <label><input id="re-count" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label>
             <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurences
           </div>
           <div>
-            <label><input type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label>
-            <datetimepicker ng-show="recurEnd.type === 'on'" ng-model="recurEnd.until" class="recurUntilDate" show-meridian="false" date-format="dd/MM/yyyy" date-options="untilDateOptions" show-button-bar="false" ng-change="calculateRRule()"></datetimepicker>
-            <datetimepicker ng-hide="recurEnd.type === 'on'" ng-model="fake.until"     class="recurUntilDate" show-meridian="false" date-format=" "          date-options="untilDateOptions" disabled-date="true" readonly-date="true" readonly-time="true" disabled></datetimepicker>
+            <label><input id="re-until" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label>
+            <datetimepicker ng-show="recurEnd.type === 'on'" ng-model="recurEnd.until" class="recurUntilDate re-input" show-meridian="false" date-format="dd/MM/yyyy" date-options="untilDateOptions" show-button-bar="false" ng-change="calculateRRule()"></datetimepicker>
+            <datetimepicker ng-hide="recurEnd.type === 'on'" ng-model="fake.until"     class="recurUntilDate re-dummy" show-meridian="false" date-format=" "          date-options="untilDateOptions" disabled-date="true" readonly-date="true" readonly-time="true" disabled></datetimepicker>
           </div>
         </div>
     </div>
