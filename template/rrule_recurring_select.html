@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div class="daily rrs-toggle" ng-if="selectedFrequency.type == 'day'">
+  <div class="daily rrs-toggle" ng-if="selectedFrequency.type == 'day' && !simplifiedDaily">
     <ul>
       <li ng-repeat="hour in hours" ng-click="toggleSelected(hour)" ng-class="{ selected: hour.selected }">
         {{hour.name}}
