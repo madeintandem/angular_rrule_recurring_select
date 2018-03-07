@@ -39,7 +39,7 @@
       angular.module('sampleApp', ['rruleRecurringSelect', 'rrule.templates'])
       .controller('rruleCtrl', function($scope) {
         $scope.startRule='FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=7,12,17,22';
-        $scope.currRule = {blah: 'sdfsdfsdf'};
+        $scope.out = {};
       })
     </script>
 
@@ -53,10 +53,10 @@
     <h2>Meds Slots</h2>
     <div id="lookInHere" ng-controller="rruleCtrl">
     <!--<rrule-recurring-select compact show-end hours-func="medSlots" week-start-day="SA" rule="myrule"></rrule-recurring-select>-->
-    <rrule-recurring-select start-rule="startRule" curr-rule="currRule" show-end hours-func="medSlots" compact show-end></rrule-recurring-select>
-      <pre><<< {{ currRule.rrule.toText() }} >>></pre>
+    <rrule-recurring-select start-rule="startRule" curr-rule="out" show-end hours-func="medSlots" compact show-end></rrule-recurring-select>
+      <pre><<< {{ out.rrule.toText() }} >>></pre>
     </div>
-    <!--<h2>Normal</h2>-->
-    <!--<rrule-recurring-select></rrule-recurring-select>-->
+    <h2>Normal</h2>
+    <rrule-recurring-select></rrule-recurring-select>
   </body>
 </html>

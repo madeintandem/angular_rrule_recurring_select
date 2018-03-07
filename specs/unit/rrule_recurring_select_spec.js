@@ -313,14 +313,14 @@ describe("ActivityChart Directive", function() {
       it("sets the rule even if the rule is an empty string", function() {
         var rule = new RRule({ freq: RRule.DAILY });
         directiveScope.rule = '';
-        directiveScope.recurrenceRule = rule;
+        directiveScope.recurrenceRule.rrule = rule;
         directiveScope.calculateRRule();
         expect(directiveScope.rule).to.equal(rule.toString());
       });
 
       it("always sets the rule based on the calculated RRule", function() {
         var rule = new RRule({ freq: RRule.DAILY });
-        directiveScope.recurrenceRule = rule;
+        directiveScope.recurrenceRule.rrule = rule;
         directiveScope.calculateRRule();
         expect(directiveScope.rule).to.equal(rule.toString());
       });
@@ -438,33 +438,33 @@ describe("ActivityChart Directive", function() {
 
       describe("every hour", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.interval = '';
           directiveScope.calculateHourlyRRule();
         });
 
         it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every hour');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every hour');
         });
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=HOURLY;INTERVAL=1;WKST=SU');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=HOURLY;INTERVAL=1;WKST=SU');
         });
       });
 
       describe("every 2 hours", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.interval = 2;
           directiveScope.calculateHourlyRRule();
         });
 
         it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 hours');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 2 hours');
         });
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=HOURLY;INTERVAL=2;WKST=SU');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=HOURLY;INTERVAL=2;WKST=SU');
         });
       });
 
@@ -475,40 +475,40 @@ describe("ActivityChart Directive", function() {
 
       describe("every day", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.interval = '';
           directiveScope.calculateDailyRRule();
         });
 
         it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every day');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every day');
         });
 
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU');
         });
       });
 
       describe("every 2 days", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.interval = 2;
           directiveScope.calculateDailyRRule();
         });
 
         it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 days');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 2 days');
         });
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=2;WKST=SU');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=DAILY;INTERVAL=2;WKST=SU');
         });
       });
 
       describe("every day at 10am and 5pm", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.interval = 1;
           directiveScope.hours[10].selected = true;
           directiveScope.hours[17].selected = true;
@@ -516,11 +516,11 @@ describe("ActivityChart Directive", function() {
         });
 
         it("can grab text description from RRule", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every day at 10 and 17');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every day at 10 and 17');
         });
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=10,17;BYSECOND=0;BYMINUTE=0');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=10,17;BYSECOND=0;BYMINUTE=0');
         });
       });
 
@@ -534,66 +534,66 @@ describe("ActivityChart Directive", function() {
 
       describe("every week with no date selected", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.calculateWeeklyRRule();
         });
 
         it("occurs every week on week start (sunday)", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every week');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every week');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU');
         });
       });
 
       describe("every week on monday", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.weekDays[1].selected = true;
           directiveScope.calculateWeeklyRRule();
         });
 
         it("occurs every week on Monday", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every week on Monday');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every week on Monday');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU;BYDAY=MO');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU;BYDAY=MO');
         });
       });
 
       describe("every week on monday and thursday", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.weekDays[1].selected = true;
           directiveScope.weekDays[4].selected = true;
           directiveScope.calculateWeeklyRRule();
         });
 
         it("occurs every week on Monday and Thursday", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every week on Monday, Thursday');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every week on Monday, Thursday');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU;BYDAY=MO,TH');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU;BYDAY=MO,TH');
         });
       });
 
       describe("every 2 weeks on wednesday", function() {
         beforeEach(function() {
-          directiveScope.recurrenceRule = undefined;
+          delete directiveScope.recurrenceRule.rrule;
           directiveScope.interval = 2;
           directiveScope.weekDays[3].selected = true;
           directiveScope.calculateWeeklyRRule();
         });
 
         it("occurs every 2 weeks on Wednesday", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 weeks on Wednesday');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 2 weeks on Wednesday');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=WE');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=WE');
         });
       });
     });
@@ -632,7 +632,7 @@ describe("ActivityChart Directive", function() {
 
     describe("#calculateDayOfMonthRRule", function() {
       beforeEach(function() {
-        directiveScope.recurrenceRule = undefined;
+        delete directiveScope.recurrenceRule.rrule;
         directiveScope.interval = '';
         directiveScope.initMonthlyDays();
       });
@@ -646,11 +646,11 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct text", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every month on the 10th, 21st and 3rd');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every month on the 10th, 21st and 3rd');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYMONTHDAY=3,10,21');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYMONTHDAY=3,10,21');
         });
       });
 
@@ -661,11 +661,11 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct text", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every month on the last');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every month on the last');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYMONTHDAY=-1');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYMONTHDAY=-1');
         });
       });
 
@@ -678,18 +678,18 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct text", function() {
-          expect(directiveScope.recurrenceRule.toText()).to.eql('every 3 months on the 1st and last');
+          expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 3 months on the 1st and last');
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=3;WKST=SU;BYMONTHDAY=1,-1');
+          expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=3;WKST=SU;BYMONTHDAY=1,-1');
         });
       });
     });
 
     describe("#calculateDayOfWeekRRule", function() {
       beforeEach(function() {
-        directiveScope.recurrenceRule = undefined;
+        delete directiveScope.recurrenceRule.rrule;
         directiveScope.interval = '';
         directiveScope.initMonthlyWeeklyDays();
       });
@@ -707,11 +707,11 @@ describe("ActivityChart Directive", function() {
           });
 
           it("has the correct text", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every month on the 2nd Tuesday and 4th Tuesday');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every month on the 2nd Tuesday and 4th Tuesday');
           });
 
           it("has the correct iCal string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYDAY=+2TU,+4TU');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYDAY=+2TU,+4TU');
           });
         });
 
@@ -723,11 +723,11 @@ describe("ActivityChart Directive", function() {
           });
 
           it("has the correct text", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every month on the 2nd Tuesday and 1st Sunday');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every month on the 2nd Tuesday and 1st Sunday');
           });
 
           it("has the correct iCal string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYDAY=+1SU,+2TU');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYDAY=+1SU,+2TU');
           });
         });
       });
@@ -745,11 +745,11 @@ describe("ActivityChart Directive", function() {
           });
 
           it("has the correct text", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 months on the 2nd Monday and 4th Monday');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 2 months on the 2nd Monday and 4th Monday');
           });
 
           it("has the correct iCal string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=2;WKST=SU;BYDAY=+2MO,+4MO');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=2;WKST=SU;BYDAY=+2MO,+4MO');
           });
         });
       });
@@ -759,7 +759,7 @@ describe("ActivityChart Directive", function() {
       describe("every year", function() {
         describe("on one month and day", function() {
           beforeEach(function() {
-            directiveScope.recurrenceRule = undefined;
+            delete directiveScope.recurrenceRule.rrule;
             directiveScope.interval = '';
             directiveScope.yearMonths[7].selected = true;
             directiveScope.monthDays[24].selected = true;
@@ -767,17 +767,17 @@ describe("ActivityChart Directive", function() {
           });
 
           it("can grab text description from RRule", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every August on the 25th');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every August on the 25th');
           });
 
           it("has the correct iCal string from RRule", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYMONTH=8;BYMONTHDAY=25');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYMONTH=8;BYMONTHDAY=25');
           });
         });
 
         describe("multiple months and days", function() {
           beforeEach(function() {
-            directiveScope.recurrenceRule = undefined;
+            delete directiveScope.recurrenceRule.rrule;
             directiveScope.interval = '';
             directiveScope.yearMonths[4].selected = true;
             directiveScope.yearMonths[7].selected = true;
@@ -788,11 +788,11 @@ describe("ActivityChart Directive", function() {
           });
 
           it("can grab text description from RRule", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every May and August on the 25th and 7th');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every May and August on the 25th and 7th');
           });
 
           it("has the correct iCal string from RRule", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYMONTH=5,8;BYMONTHDAY=7,25');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=YEARLY;INTERVAL=1;BYMONTH=5,8;BYMONTHDAY=7,25');
           });
         });
       });
@@ -800,7 +800,7 @@ describe("ActivityChart Directive", function() {
       describe("every 2 years", function() {
         describe("on one month and day", function() {
           beforeEach(function() {
-            directiveScope.recurrenceRule = undefined;
+            delete directiveScope.recurrenceRule.rrule;
             directiveScope.interval = 2;
             directiveScope.yearMonths[7].selected = true;
             directiveScope.monthDays[24].selected = true;
@@ -808,17 +808,17 @@ describe("ActivityChart Directive", function() {
           });
 
           it("can grab text description from RRule", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 years August on the 25th');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 2 years August on the 25th');
           });
 
           it("has the correct iCal string from RRule", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYMONTH=8;BYMONTHDAY=25');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYMONTH=8;BYMONTHDAY=25');
           });
         });
 
         describe("multiple months and days", function() {
           beforeEach(function() {
-            directiveScope.recurrenceRule = undefined;
+            delete directiveScope.recurrenceRule.rrule;
             directiveScope.interval = 2;
             directiveScope.yearMonths[4].selected = true;
             directiveScope.yearMonths[7].selected = true;
@@ -829,11 +829,11 @@ describe("ActivityChart Directive", function() {
           });
 
           it("can grab text description from RRule", function() {
-            expect(directiveScope.recurrenceRule.toText()).to.eql('every 2 years May and August on the 25th and 7th');
+            expect(directiveScope.recurrenceRule.rrule.toText()).to.eql('every 2 years May and August on the 25th and 7th');
           });
 
           it("has the correct iCal string from RRule", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYMONTH=5,8;BYMONTHDAY=7,25');
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql('FREQ=YEARLY;INTERVAL=2;BYMONTH=5,8;BYMONTHDAY=7,25');
           });
         });
       });
@@ -842,7 +842,7 @@ describe("ActivityChart Directive", function() {
     describe("#parseRule", function() {
       beforeEach(function() {
         directiveScope.resetData();
-        directiveScope.recurrenceRule = undefined;
+        delete directiveScope.recurrenceRule.rrule;
 
       });
 
@@ -855,7 +855,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to 'hourly'", function() {
@@ -875,7 +875,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to 'hourly'", function() {
@@ -898,7 +898,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to 'daily'", function() {
@@ -918,7 +918,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to 'daily'", function() {
@@ -938,7 +938,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to 'daily'", function() {
@@ -975,7 +975,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selected frequency to weekly", function() {
@@ -995,7 +995,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets selected to true for monday", function() {
@@ -1025,7 +1025,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets selected to true for monday and thursday", function() {
@@ -1056,7 +1056,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets selected to true for wednesday", function() {
@@ -1093,7 +1093,7 @@ describe("ActivityChart Directive", function() {
             });
 
             it("sets the recurrenceRule from the ical string", function() {
-              expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+              expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
             });
 
             it("sets the selectedFrequency to monthly", function() {
@@ -1134,7 +1134,7 @@ describe("ActivityChart Directive", function() {
             });
 
             it("sets the recurrenceRule from the ical string", function() {
-              expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+              expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
             });
 
             it("sets the selectedFrequency to monthly", function() {
@@ -1169,7 +1169,7 @@ describe("ActivityChart Directive", function() {
             });
 
             it("sets the recurrenceRule from the ical string", function() {
-              expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+              expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
             });
 
             it("sets the selectedFrequency to monthly", function() {
@@ -1207,7 +1207,7 @@ describe("ActivityChart Directive", function() {
             });
 
             it("sets the recurrenceRule from the ical string", function() {
-              expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+              expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
             });
 
             it("sets the selectedFrequency to monthly", function() {
@@ -1236,7 +1236,7 @@ describe("ActivityChart Directive", function() {
             });
 
             it("sets the recurrenceRule from the ical string", function() {
-              expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+              expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
             });
 
             it("sets the selectedFrequency to monthly", function() {
@@ -1261,7 +1261,7 @@ describe("ActivityChart Directive", function() {
             });
 
             it("sets the recurrenceRule from the ical string", function() {
-              expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+              expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
             });
 
             it("sets the selectedFrequency to monthly", function() {
@@ -1289,7 +1289,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to yearly", function() {
@@ -1309,7 +1309,7 @@ describe("ActivityChart Directive", function() {
           });
 
           it("sets the recurrenceRule from the ical string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql(iCalString)
+            expect(directiveScope.recurrenceRule.rrule.toString()).to.eql(iCalString)
           });
 
           it("sets the selectedFrequency to yearly", function() {
