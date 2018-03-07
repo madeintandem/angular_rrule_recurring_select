@@ -28,6 +28,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.hideActions = typeof attrs['hideActions'] !== 'undefined';
         scope.resetData();
         scope.$watch(scope.currentRule, scope.ruleChanged);
+        scope.startWatch = scope.$watch(scope.getStartRule, scope.startRuleChanged);
         scope.dateOptions = {};
         var minUntil = attrs['minUntil'];
         if (minUntil) {
@@ -466,6 +467,17 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
 
       scope.currentRule = function () {
         return scope.rule;
+      };
+
+      scope.startRuleChanged = function () {
+        if (!_.isEmpty(scope.startRule)) {
+          scope.startWatch();
+          scope.parseRule(scope.startRule);
+        }
+      };
+
+      scope.getStartRule = function () {
+        return scope.startRule;
       };
 
       scope.init();
