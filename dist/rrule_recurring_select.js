@@ -17,6 +17,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.dispStart = attrs['dispStart'];
         scope.showEnd = typeof attrs['showEnd'] !== "undefined";
         scope.compact = typeof attrs['compact'] !== "undefined";
+        scope.simplifiedDaily = typeof attrs['simplifiedDaily'] !== "undefined";
         scope.initFrequencies();
         scope.initWeekOrdinals();
         scope.selectedMonthFrequency = 'day_of_month';
@@ -146,6 +147,29 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
         scope.calculateRRule();
       };
 
+      scope.setRecurUntil = function() {
+        if (!scope.recurEnd.until) {
+          var defaultRecurEndBase;
+          if (scope.defaultUntil) {
+            defaultRecurEndBase = parseInt(scope.defaultUntil);
+          } else {
+            // Go to the end of the current day
+            defaultRecurEndBase = new Date().getTime() + (MS_IN_DAY * 60);
+            var ms = defaultRecurEndBase % MS_IN_DAY;
+            defaultRecurEndBase = defaultRecurEndBase - ms;
+          }
+          if (defaultRecurEndBase < scope.minUntil) {
+            defaultRecurEndBase = scope.minUntil;
+          }
+          scope.recurEnd.until = new Date(defaultRecurEndBase);
+        }
+      };
+
+      scope.freqChanged = function() {
+        scope.resetData();
+        scope.calculateRRule();
+      };
+
       scope.calculateRRule = function(recurTypeChange) {
 
         switch (recurTypeChange) {
@@ -156,20 +180,7 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
           case 'on' :
             delete scope.recurEnd.count;
             delete scope.recurrenceRule.options.count;
-            if (!scope.recurEnd.until) {
-              var defaultRecurEndBase;
-              if (scope.defaultUntil) {
-                defaultRecurEndBase = parseInt(scope.defaultUntil);
-              } else {
-                defaultRecurEndBase = new Date().getTime() + (MS_IN_DAY * 60);
-              }
-              if (defaultRecurEndBase < scope.minUntil) {
-                defaultRecurEndBase = scope.minUntil + ONE_DAY;
-              }
-              // Go to the beginning of the day to get rid of what you can't see....
-              var ms = defaultRecurEndBase % MS_IN_DAY;
-              scope.recurEnd.until = new Date(defaultRecurEndBase - ms);
-            }
+            scope.setRecurUntil();
             break;
         }
 
@@ -340,23 +351,15 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
 
       scope.initFromRecurEndRule = function() {
         scope.recurEnd = {};
-        if (!scope.recurEnd.until) {
-          var defaultRecurEndBase;
-          if (scope.defaultUntil) {
-            defaultRecurEndBase = parseInt(scope.defaultUntil);
-          } else {
-            defaultRecurEndBase = new Date().getTime() + (MS_IN_DAY * 60);
-          }
-          if (defaultRecurEndBase < scope.minUntil) {
-            defaultRecurEndBase = scope.minUntil + ONE_DAY;
-          }
-          // Go to the beginning of the day to get rid of what you can't see....
-          var ms = defaultRecurEndBase % MS_IN_DAY;
-          scope.recurEnd.until = new Date(defaultRecurEndBase - ms);
-        }
+        scope.setRecurUntil();
         if (scope.recurrenceRule.options.until) {
           scope.recurEnd.type = 'on';
-          scope.recurEnd.until = scope.recurrenceRule.options.until;
+          // Handle use of timezones in RRule
+          if (scope.recurrenceRule.options.until._moment) {
+            scope.recurEnd.until = scope.recurrenceRule.options.until._moment.toDate();
+          } else {
+            scope.recurEnd.until = scope.recurrenceRule.options.until;
+          }
         } else if (scope.recurrenceRule.options.count) {
           scope.recurEnd.type = 'after';
           scope.recurEnd.count = scope.recurrenceRule.options.count;
@@ -416,6 +419,10 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
             }
           });
         });
+      };
+
+      scope.untilDateOptions = {
+          "showWeeks": false
       };
 
       scope.ruleChanged = function() {

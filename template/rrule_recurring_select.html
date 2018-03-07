@@ -3,7 +3,7 @@
 
   <div class="frequency-controls">
     <div class="frequency-type">
-      <span ng-show="dispStart">From {{ dispStart | date:'dd/MM/yy'}}. </span><span ng-show="compact">Repeat </span><select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="resetData()" required>
+      <span ng-show="dispStart">From {{ dispStart | date:'dd/MM/yy'}}. </span><span ng-show="compact">Repeat </span><select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required>
       </select>
     </div>
 
@@ -97,6 +97,9 @@
         </div>
     </div>
   </div>
+  <!--<pre>{{ recurrenceRule }}-->
+    <!--{{ weekDays | json }}-->
+  <!--</pre>-->
   <div ng-if="!hideActions" class="actions">
     <hr />
 
