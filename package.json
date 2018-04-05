@@ -1,4 +1,12 @@
 {
+  "name": "angular-rrule-recurring-select",
+  "author": "Mark Chapman <support@reallycare.org>",
+  "version": "0.0.1",
+  "description": "Recurrence editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ReallyCare/angular_rrule_recurring_select"
+  },
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
@@ -33,5 +41,6 @@
     "gulp-sass": "^2.1.0",
     "gulp-util": "^2.2.16",
     "gulp-angular-templatecache": "^1.7.0"
-  }
+  },
+  "licence":"MIT"
 }
