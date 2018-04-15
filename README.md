@@ -7,7 +7,6 @@ Angular directive to select recurrence rule pattern powered by RRule.js
 
 ```
 npm install
-bower install
 ```
 
 ## Running demo server

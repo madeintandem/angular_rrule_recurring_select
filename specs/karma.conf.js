@@ -3,15 +3,14 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha-debug', 'mocha', 'chai', 'sinon', 'jquery-1.9.1'],
+    frameworks: ['mocha-debug', 'mocha', 'chai', 'sinon'],
     files: [
-      '../bower_components/jquery/jquery.js',
-      '../bower_components/angular/angular.js',
-      '../bower_components/moment/moment.js',
-      '../bower_components/rrule/lib/rrule.js',
-      '../bower_components/rrule/lib/nlp.js',
-      '../bower_components/angular-mocks/angular-mocks.js',
-      '../bower_components/lodash/dist/lodash.js',
+      '../node_modules/angular/angular.js',
+      '../node_modules/moment/moment.js',
+      '../node_modules/rrule/lib/rrule.js',
+      '../node_modules/rrule/lib/nlp.js',
+      '../node_modules/angular-mocks/angular-mocks.js',
+      '../node_modules/lodash/lodash.js',
       '../lib/rrule_recurring_select.js',
       './support/spec_helper.js',
       './unit/**/*_spec.js',

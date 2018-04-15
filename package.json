@@ -8,11 +8,19 @@
     "url": "https://github.com/ReallyCare/angular_rrule_recurring_select"
   },
   "scripts": {
-    "postinstall": "bower install",
     "prestart": "npm install",
     "pretest": "npm install",
     "start": "node server.js",
     "test": "node node_modules/karma/bin/karma start specs/karma.conf.js"
+  },
+  "dependencies": {
+    "angular": "1.6.4",
+    "angular-mocks": "1.6.4",
+    "moment": "2.18.1",
+    "lodash": "4.17.4",
+    "rrule": "git://github.com/reallycare/rrule.git#master",
+    "fng-bootstrap-datetime": "^0.12.0-beta.1",
+    "angular-ui-bootstrap": "2.5.0"
   },
   "devDependencies": {
     "express": "^4.5.1",
@@ -42,5 +50,5 @@
     "gulp-util": "^2.2.16",
     "gulp-angular-templatecache": "^1.7.0"
   },
-  "licence":"MIT"
+  "licence": "MIT"
 }
