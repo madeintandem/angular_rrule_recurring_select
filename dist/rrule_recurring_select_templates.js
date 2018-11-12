@@ -113,10 +113,12 @@ angular.module('rruleRecurringSelect', []).directive('rruleRecurringSelect', [fu
       };
 
       scope.medSlots = function() {
-        return MedsSessions.map(function(sess) {
-          sess.selected = false;
-          return sess;
-        });
+        var hoursArray = [];
+        for (var i = 0 ; i < MedsSessions.length ; i++) {
+          var slot = MedsSessions[i];
+          hoursArray.push({value: slot.value, name: slot.name, selected: false})
+        }
+        return hoursArray;
       };
 
       scope.initYearlyMonths = function() {
