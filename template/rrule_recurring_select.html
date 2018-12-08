@@ -87,7 +87,7 @@
           <div><label><input id="re-never" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label></div>
           <div>
             <label><input id="re-count" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label>
-            <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurences
+            <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurrences
           </div>
           <div>
             <label><input id="re-until" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label>
