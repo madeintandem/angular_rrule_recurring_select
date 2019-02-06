@@ -11,6 +11,8 @@ module.exports = function(config) {
       '../node_modules/rrule/lib/nlp.js',
       '../node_modules/angular-mocks/angular-mocks.js',
       '../node_modules/lodash/lodash.js',
+      '../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+      '../node_modules/fng-bootstrap-datetime/fng-bootstrap-datetime.js',
       '../lib/rrule_recurring_select.js',
       './support/spec_helper.js',
       './unit/**/*_spec.js',
@@ -44,8 +46,20 @@ module.exports = function(config) {
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    //browsers: ['Chrome', 'Firefox', 'Safari'],
-    browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadless: {
+        base: "Chrome",
+        flags: [
+          "--headless",
+          "--disable-gpu",
+          // Without a remote debugging port, Google Chrome exits immediately.
+          "--remote-debugging-port=9222"
+        ]
+      }
+    },
+
+    browsers: ["ChromeHeadless"],
+    // browsers : ['Firefox'],
     singleRun: false
   });
 };

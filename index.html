@@ -1,7 +1,13 @@
 <!doctype html>
 <html>
   <head>
-    <script src="vendor.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/moment/moment.js"></script>
+    <script src="node_modules/lodash/lodash.js"></script>
+    <script src="node_modules/rrule/lib/rrule.js"></script>
+    <script src="node_modules/rrule/lib/nlp.js"></script>
+    <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="node_modules/fng-bootstrap-datetime/fng-bootstrap-datetime.js"></script>
     <script>
       (function (root) {
         var serverSide = typeof module !== 'undefined' && module.exports;
@@ -42,10 +48,10 @@
       })
     </script>
 
-    <script src="app.js"></script>
-    <script src="templates.js"></script>
+    <script src="dist/rrule_recurring_select_templates.js"></script>
 
-    <link rel="stylesheet" href="css/demo.css" />
+    <link rel="stylesheet" href="dist/rrule_recurring_select.css" />
+    <link rel="stylesheet" href="node_modules/fng-bootstrap-datetime/fng-bootstrap-datetime.css" />
   </head>
   <body id="ng-app" ng-app="sampleApp">
     <h1>Sample RRule Recurring Select</h1>
