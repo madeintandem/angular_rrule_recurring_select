@@ -18,6 +18,7 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         scope.showEnd = typeof attrs['showEnd'] !== "undefined";
         scope.compact = typeof attrs['compact'] !== "undefined";
         scope.simplifiedDaily = typeof attrs['simplifiedDaily'] !== "undefined";
+        scope.noHourly = typeof attrs['noHourly'] !== "undefined";
         scope.initFrequencies();
         scope.initWeekOrdinals();
         scope.selectedMonthFrequency = 'day_of_month';
@@ -37,14 +38,16 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
       };
 
       scope.initFrequencies = function() {
-        scope.frequencies = [
-          { name: 'Hourly', rruleType: RRule.HOURLY, type: 'hour' },
-          { name: 'Daily', rruleType: RRule.DAILY, type: 'day' },
-          { name: 'Weekly', rruleType: RRule.WEEKLY, type: 'week' },
-          { name: 'Monthly', rruleType: RRule.MONTHLY, type: 'month' },
-          { name: 'Yearly', rruleType: RRule.YEARLY, type: 'year' }
-        ];
-        scope.selectedFrequency = scope.frequencies[1];
+        scope.frequencies = [];
+        if (!scope.noHourly) {
+          scope.frequencies.push({name: 'Hourly', rruleType: RRule.HOURLY, type: 'hour'})
+        }
+        scope.selectedFrequency = { name: 'Daily', rruleType: RRule.DAILY, type: 'day' };
+        scope.frequencies.push(
+            scope.selectedFrequency,
+            { name: 'Weekly', rruleType: RRule.WEEKLY, type: 'week' },
+            { name: 'Monthly', rruleType: RRule.MONTHLY, type: 'month' },
+            { name: 'Yearly', rruleType: RRule.YEARLY, type: 'year' });
       };
 
       scope.initMonthlyDays = function() {
