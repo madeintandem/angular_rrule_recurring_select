@@ -24,7 +24,7 @@
     border: 1px solid #BBBDBF; }
     .rrule-recurring-select .weekly ul li.selected, .rrule-recurring-select .daily ul li.selected {
       background-color: #008000;
-      color: #000000; }
+      color: #eeeeee; }
   .rrule-recurring-select .monthly.day_of_month {
     height: 198px; }
   .rrule-recurring-select .monthly.day_of_week {
@@ -45,7 +45,7 @@
       width: 136px; }
     .rrule-recurring-select .monthly ul.month-days li.selected {
       background-color: #008000;
-      color: #000000; }
+      color: #eeeeee; }
   .rrule-recurring-select .monthly ul.month-week-days {
     width: 259px; }
     .rrule-recurring-select .monthly ul.month-week-days li .week-days li {
@@ -67,7 +67,7 @@
         font-weight: normal; }
       .rrule-recurring-select .monthly ul.month-week-days li .week-days li.selected {
         background-color: #008000;
-        color: #000000; }
+        color: #eeeeee; }
   .rrule-recurring-select .yearly ul.year-months li.year-month {
     display: inline-block; }
   .rrule-recurring-select .yearly ul.year-month-days li.year-month-day {
