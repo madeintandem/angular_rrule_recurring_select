@@ -1,7 +1,9 @@
 $light-gray: #f6f6f6;
 $dark-gray: #BBBDBF;
-$white: #ffffff;
-$smoke-gray: #929497;
+$bg: #dddddd;
+$text: #666666;
+$bgsel: #008000;
+$textsel: #000000;
 $dark-blue: #3c5471;
 
 .rrule-recurring-select {
@@ -26,7 +28,8 @@ $dark-blue: #3c5471;
     ul {
       li {
         display: inline-block;
-        background-color: $white;
+        background-color: $bg;
+        color: $text;
         cursor: pointer;
         min-width: 25px;
         height: 20px;
@@ -36,7 +39,8 @@ $dark-blue: #3c5471;
         border: 1px solid $dark-gray;
 
         &.selected {
-          background-color: $smoke-gray;
+          background-color: $bgsel;
+          color: $textsel;
         }
       }
     }
@@ -55,7 +59,8 @@ $dark-blue: #3c5471;
 
       li {
         display: inline-block;
-        background-color: $white;
+        background-color: $bg;
+        color: $text;
         cursor: pointer;
         width: 25px;
         height: 20px;
@@ -70,7 +75,8 @@ $dark-blue: #3c5471;
         }
 
         &.selected {
-          background-color: $smoke-gray;
+          background-color: $bgsel;
+          color: $textsel;
         }
       }
     }
@@ -86,7 +92,8 @@ $dark-blue: #3c5471;
             width: 20px;
             height: 20px;
             display: inline-block;
-            background-color: $white;
+            background-color: $bg;
+            color: $text;
             cursor: pointer;
 
             padding: 5px;
@@ -102,7 +109,8 @@ $dark-blue: #3c5471;
             }
 
             &.selected {
-              background-color: $smoke-gray;
+              background-color: $bgsel;
+              color: $textsel;
             }
           }
         }
