@@ -116,10 +116,15 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
       };
 
       scope.medSlots = function() {
-        var hoursArray = [];
-        for (var i = 0 ; i < MedsSessions.length ; i++) {
-          var slot = MedsSessions[i];
-          hoursArray.push({value: slot.value, name: slot.name, selected: false})
+        var hoursArray;
+        if (typeof scope.$parent.personMedsSlots === "function") {
+          hoursArray = scope.$parent.personMedsSlots();
+        } else {
+          // use the notional four per day
+          for (var i = 0 ; i < MedsSessions.length ; i++) {
+            var slot = MedsSessions[i];
+            hoursArray.push({value: slot.value, name: slot.name, selected: false})
+          }
         }
         return hoursArray;
       };
