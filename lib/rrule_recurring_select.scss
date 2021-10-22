@@ -51,6 +51,7 @@ $dark-blue: #3c5471;
 
   .weekly, .sessions {
     ul {
+      margin-bottom: 0px;
       li {
         display: inline-block;
         background-color: $bg;
@@ -155,6 +156,16 @@ $dark-blue: #3c5471;
         margin-right: 5px;
       }
     }
+    .year-month-days {
+      label {
+        min-width: 16px;
+      }
+    }
+    .year-months {
+      label {
+        min-width: 25px;
+      }
+    }
   }
 
   .actions {
@@ -182,7 +193,7 @@ $dark-blue: #3c5471;
   .recurEnd {
     .recurEndsOpts {
       .recurEndsOpt {
-        height: 29px;
+        min-height: 29px;
       }
     }
   }

@@ -32,6 +32,9 @@
 .rrule-recurring-select .monthly {
   margin-bottom: 12px;
 }
+.rrule-recurring-select .weekly ul, .rrule-recurring-select .sessions ul {
+  margin-bottom: 0px;
+}
 .rrule-recurring-select .weekly ul li, .rrule-recurring-select .sessions ul li {
   display: inline-block;
   background-color: #dddddd;
@@ -109,6 +112,12 @@
 .rrule-recurring-select .yearly .year-months li, .rrule-recurring-select .yearly .year-month-days li {
   margin-right: 5px;
 }
+.rrule-recurring-select .yearly .year-month-days label {
+  min-width: 16px;
+}
+.rrule-recurring-select .yearly .year-months label {
+  min-width: 25px;
+}
 .rrule-recurring-select .actions .button {
   text-align: center;
   float: left;
@@ -127,5 +136,5 @@
   align-items: center;
 }
 .rrule-recurring-select .recurEnd .recurEndsOpts .recurEndsOpt {
-  height: 29px;
+  min-height: 29px;
 }
