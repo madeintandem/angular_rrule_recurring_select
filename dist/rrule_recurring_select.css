@@ -5,83 +5,127 @@
   width: 400px;
   border-radius: 8px;
   box-shadow: 0 5px 15px;
-  color: black; }
-  .rrule-recurring-select ul {
-    list-style-type: none;
-    padding: 0; }
-  .rrule-recurring-select .frequency-type, .rrule-recurring-select .interval {
-    margin: 8px 0; }
-  .rrule-recurring-select .weekly ul li, .rrule-recurring-select .daily ul li {
-    display: inline-block;
-    background-color: #dddddd;
-    color: #666666;
-    cursor: pointer;
-    min-width: 25px;
-    height: 20px;
-    padding: 5px;
-    font-weight: bold;
-    text-align: center;
-    border: 1px solid #BBBDBF; }
-    .rrule-recurring-select .weekly ul li.selected, .rrule-recurring-select .daily ul li.selected {
-      background-color: #32d0328c;
-      color: #eeeeee; }
-  .rrule-recurring-select .monthly.day_of_month {
-    height: 198px; }
-  .rrule-recurring-select .monthly.day_of_week {
-    height: 165px; }
-  .rrule-recurring-select .monthly ul.month-days li {
-    display: inline-block;
-    background-color: #dddddd;
-    color: #666666;
-    cursor: pointer;
-    width: 25px;
-    height: 20px;
-    padding: 5px;
-    font-weight: bold;
-    text-align: center;
-    border: 1px solid #BBBDBF;
-    float: left; }
-    .rrule-recurring-select .monthly ul.month-days li:last-child {
-      width: 136px; }
-    .rrule-recurring-select .monthly ul.month-days li.selected {
-      background-color: #32d0328c;
-      color: #eeeeee; }
-  .rrule-recurring-select .monthly ul.month-week-days {
-    width: 259px; }
-    .rrule-recurring-select .monthly ul.month-week-days li .week-days li {
-      float: left;
-      width: 20px;
-      height: 20px;
-      display: inline-block;
-      background-color: #dddddd;
-      color: #666666;
-      cursor: pointer;
-      padding: 5px;
-      font-weight: bold;
-      text-align: center;
-      border: 1px solid #BBBDBF; }
-      .rrule-recurring-select .monthly ul.month-week-days li .week-days li.week-index-title {
-        width: 24px;
-        background-color: #f6f6f6;
-        border: none;
-        font-weight: normal; }
-      .rrule-recurring-select .monthly ul.month-week-days li .week-days li.selected {
-        background-color: #32d0328c;
-        color: #eeeeee; }
-  .rrule-recurring-select .yearly ul.year-months li.year-month {
-    display: inline-block; }
-  .rrule-recurring-select .yearly ul.year-month-days li.year-month-day {
-    display: inline-block; }
-  .rrule-recurring-select .actions .button {
-    text-align: center;
-    float: left;
-    margin-right: 10px;
-    padding: 10px;
-    border: 1px solid #BBBDBF;
-    width: 37%; }
-  .rrule-recurring-select .actions .summary {
-    font-weight: bold;
-    clear: both;
-    padding: 10px; }
-  .rrule-recurring-select .recurEnd .recurEndOptions {
-    display: inline-block; }
+  color: black;
+}
+.rrule-recurring-select ul {
+  list-style-type: none;
+  padding: 0;
+}
+.rrule-recurring-select label {
+  margin-bottom: 0px;
+}
+.rrule-recurring-select .frequency-type, .rrule-recurring-select .interval {
+  margin: 8px 0px 2px 0px;
+}
+.rrule-recurring-select .frequency-controls .intervalLabel {
+  margin-right: 5px;
+}
+.rrule-recurring-select div.col1, .rrule-recurring-select div.recurEndsOptLabel {
+  min-width: 75px;
+}
+.rrule-recurring-select .sessions .noSessionsLabel {
+  font-style: italic;
+}
+.rrule-recurring-select .weekly, .rrule-recurring-select .monthly, .rrule-recurring-select .yearly, .rrule-recurring-select .month-week-days-div {
+  margin-top: 6px;
+}
+.rrule-recurring-select .monthly {
+  margin-bottom: 12px;
+}
+.rrule-recurring-select .weekly ul li, .rrule-recurring-select .sessions ul li {
+  display: inline-block;
+  background-color: #dddddd;
+  color: #666666;
+  cursor: pointer;
+  min-width: 25px;
+  height: 20px;
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #BBBDBF;
+}
+.rrule-recurring-select .weekly ul li.selected, .rrule-recurring-select .sessions ul li.selected {
+  background-color: #32d0328c;
+  color: #eeeeee;
+}
+.rrule-recurring-select .monthly.day_of_month {
+  height: 198px;
+}
+.rrule-recurring-select .monthly.day_of_week {
+  height: 165px;
+}
+.rrule-recurring-select .monthly ul.month-days li {
+  display: inline-block;
+  background-color: #dddddd;
+  color: #666666;
+  cursor: pointer;
+  width: 25px;
+  height: 20px;
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #BBBDBF;
+  float: left;
+}
+.rrule-recurring-select .monthly ul.month-days li:last-child {
+  width: 136px;
+}
+.rrule-recurring-select .monthly ul.month-days li.selected {
+  background-color: #32d0328c;
+  color: #eeeeee;
+}
+.rrule-recurring-select .monthly ul.month-week-days {
+  width: 259px;
+}
+.rrule-recurring-select .monthly ul.month-week-days li .week-days li {
+  float: left;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-color: #dddddd;
+  color: #666666;
+  cursor: pointer;
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #BBBDBF;
+}
+.rrule-recurring-select .monthly ul.month-week-days li .week-days li.week-index-title {
+  width: 24px;
+  background-color: #f6f6f6;
+  border: none;
+  font-weight: normal;
+}
+.rrule-recurring-select .monthly ul.month-week-days li .week-days li.selected {
+  background-color: #32d0328c;
+  color: #eeeeee;
+}
+.rrule-recurring-select .yearly ul.year-months li.year-month {
+  display: inline-block;
+}
+.rrule-recurring-select .yearly ul.year-month-days li.year-month-day {
+  display: inline-block;
+}
+.rrule-recurring-select .yearly .year-months li, .rrule-recurring-select .yearly .year-month-days li {
+  margin-right: 5px;
+}
+.rrule-recurring-select .actions .button {
+  text-align: center;
+  float: left;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #BBBDBF;
+  width: 37%;
+}
+.rrule-recurring-select .actions .summary {
+  font-weight: bold;
+  clear: both;
+  padding: 10px;
+}
+.rrule-recurring-select .inline {
+  display: flex;
+  align-items: center;
+}
+.rrule-recurring-select .recurEnd .recurEndsOpts .recurEndsOpt {
+  height: 29px;
+}

@@ -80,15 +80,31 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         });
       };
 
-      scope.resetData = function() {
+      scope.initHours = function () {
         var hoursFunc = attrs['hoursFunc'] || 'hoursOfDay';
+        const wasHours = scope.hours;
+        const hours = scope[hoursFunc]();
+        scope.hours = angular.copy(hours);
+        if (wasHours) {
+          for (const wasHour of wasHours) {
+            if (wasHour.selected && wasHour.id) {
+              const hour = scope.hours.find((h) => h.id === wasHour.id);
+              if (hour) {
+                hour.selected = true;
+              }
+            }
+          }
+        }
+      }
+
+      scope.resetData = function() {
         scope.weekStart = attrs['weekStartDay'] || 'SU';
-        scope.hours = scope[hoursFunc]();
         scope.defaultUntil = attrs['defaultUntil'];
         scope.weekDays = scope.daysOfWeek();
+        scope.initHours();
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
-        scope.initYearlyMonths();
+        scope.initYearlyMonths();  
         scope.selectedYearMonth = 1;
         scope.selectedYearMonthDay = 1;
         scope.interval = '';
@@ -444,6 +460,11 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
       scope.currentRule = function() {
         return scope.rule;
       };
+
+      scope.$on("reInitHours", function () {
+        scope.initHours();
+        scope.calculateRRule();
+      });
 
       scope.init();
     }

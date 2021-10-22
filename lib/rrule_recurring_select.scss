@@ -19,12 +19,37 @@ $dark-blue: #3c5471;
     list-style-type: none;
     padding: 0;
   }
-
-  .frequency-type, .interval {
-    margin: 8px 0;
+  label {
+    margin-bottom: 0px;
   }
 
-  .weekly, .daily {
+  .frequency-type, .interval {
+    margin: 8px 0px 2px 0px;
+  }
+  .frequency-controls {
+    .intervalLabel {
+      margin-right: 5px;
+    }
+  }
+
+  div.col1, div.recurEndsOptLabel {
+    min-width: 75px;
+  }
+
+  .sessions {
+    .noSessionsLabel {
+      font-style: italic;
+    }
+  }
+
+  .weekly, .monthly, .yearly, .month-week-days-div{
+    margin-top: 6px;
+  }
+  .monthly {
+    margin-bottom: 12px;
+  }
+
+  .weekly, .sessions {
     ul {
       li {
         display: inline-block;
@@ -118,12 +143,18 @@ $dark-blue: #3c5471;
     }
   }
 
-  .yearly ul.year-months li.year-month {
-    display: inline-block;
-  }
-
-  .yearly ul.year-month-days li.year-month-day {
-    display: inline-block;
+  .yearly {
+    ul.year-months li.year-month {
+      display: inline-block;
+    }
+    ul.year-month-days li.year-month-day {
+      display: inline-block;
+    }
+    .year-months, .year-month-days {
+      li {
+        margin-right: 5px;
+      }
+    }
   }
 
   .actions {
@@ -143,9 +174,16 @@ $dark-blue: #3c5471;
     }
   }
 
+  .inline {
+    display: flex;
+    align-items: center;
+  }
+
   .recurEnd {
-    .recurEndOptions {
-      display: inline-block;
+    .recurEndsOpts {
+      .recurEndsOpt {
+        height: 29px;
+      }
     }
   }
 }
