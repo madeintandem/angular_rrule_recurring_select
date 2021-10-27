@@ -23,6 +23,11 @@ $dark-blue: #3c5471;
     margin-bottom: 0px;
   }
 
+  ul, ol {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
   .frequency-type, .interval {
     margin: 8px 0px 2px 0px;
   }
@@ -42,11 +47,8 @@ $dark-blue: #3c5471;
     }
   }
 
-  .weekly, .monthly, .yearly, .month-week-days-div{
+  .weekly, .monthly {
     margin-top: 6px;
-  }
-  .monthly {
-    margin-bottom: 12px;
   }
 
   .weekly, .sessions {
@@ -73,28 +75,35 @@ $dark-blue: #3c5471;
   }
 
   .monthly {
-    &.day_of_month {
-      height: 198px;
+    input[type="radio"] {
+      margin-right: 5px;
     }
-
-    &.day_of_week {
-      height: 165px;
+    .month-days-div, .month-week-days-div {
+      width: 240px;
     }
-
+    .monthlyOpts {
+      margin-bottom: 8px;
+      .day-of-week-radio {
+        margin-left: 5px;
+      }
+    }
+    margin-bottom: 3px;
+    li {
+      padding: 0px;
+      margin: 0px;
+    }
     ul.month-days {
-
       li {
         display: inline-block;
         background-color: $bg;
         color: $text;
         cursor: pointer;
-        width: 25px;
-        height: 20px;
-        padding: 5px;
+        width: 34px;
+        height: 28px;
+        padding: 3px;
         font-weight: bold;
         text-align: center;
-        border: 1px solid $dark-gray;
-        float: left;
+        border: 1px solid $dark-gray!important;
 
         &:last-child {
           width: 136px;
@@ -108,29 +117,24 @@ $dark-blue: #3c5471;
     }
 
     ul.month-week-days {
-      width: 259px;
-
       li {
         .week-days {
-
           li {
-            float: left;
-            width: 20px;
-            height: 20px;
+            width: 28px;
+            height: 34px;
             display: inline-block;
             background-color: $bg;
             color: $text;
             cursor: pointer;
-
             padding: 5px;
             font-weight: bold;
             text-align: center;
-            border: 1px solid $dark-gray;
+            border: 1px solid $dark-gray!important;
 
             &.week-index-title {
-              width: 24px;
+              width: 38px;
               background-color: $light-gray;
-              border: none;
+              border: none!important;
               font-weight: normal;
             }
 
@@ -145,6 +149,9 @@ $dark-blue: #3c5471;
   }
 
   .yearly {
+    .yearlyMonths, .yearlyDayOfMonth {
+      margin-top: 6px;
+    }
     ul.year-months li.year-month {
       display: inline-block;
     }

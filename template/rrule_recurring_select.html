@@ -32,7 +32,7 @@
         <label>Every</label>
       </div>
       <div class="intervalOpts">
-        <input type="number" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}(s):
+        <input type="number" min="1" max="99" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}{{ interval !== 1 ? "s" : "" }}
       </div>
     </div>
   </div>
@@ -51,9 +51,12 @@
   </div>
 
   <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == 'month'">
-    <div class="monthlyOpts">
-      <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_month')" value="day_of_month"/>Day of month
-      <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week
+    <div class="monthlyOpts inline">
+      <div class="col1"></div>
+      <div>
+        <input type="radio" ng-model="selectedMonthFrequency" class="day-of-month-radio" ng-click="selectMonthFrequency('day_of_month')" value="day_of_month"/>Day of month
+        <input type="radio" ng-model="selectedMonthFrequency" class="day-of-week-radio" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week
+      </div>
     </div>
     <div class="monthDayOpts inline" ng-if="selectedMonthFrequency == 'day_of_month'">
       <div class="col1"></div>
