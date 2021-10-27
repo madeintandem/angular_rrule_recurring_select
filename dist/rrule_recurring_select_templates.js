@@ -100,7 +100,6 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
 
       scope.resetData = function() {
         scope.weekStart = attrs['weekStartDay'] || 'SU';
-        console.log("scope.weekStart = " + scope.weekStart);
         scope.defaultUntil = attrs['defaultUntil'];
         scope.weekDays = scope.daysOfWeek();
         scope.initHours();
