@@ -19,41 +19,13 @@ $dark-blue: #3c5471;
     list-style-type: none;
     padding: 0;
   }
-  label {
-    margin-bottom: 0px;
-  }
-
-  ul, ol {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
 
   .frequency-type, .interval {
-    margin: 8px 0px 2px 0px;
-  }
-  .frequency-controls {
-    .intervalLabel {
-      margin-right: 5px;
-    }
+    margin: 8px 0;
   }
 
-  div.col1, div.recurEndsOptLabel {
-    min-width: 75px;
-  }
-
-  .sessions {
-    .noSessionsLabel {
-      font-style: italic;
-    }
-  }
-
-  .weekly, .monthly {
-    margin-top: 6px;
-  }
-
-  .weekly, .sessions {
+  .weekly, .daily {
     ul {
-      margin-bottom: 0px;
       li {
         display: inline-block;
         background-color: $bg;
@@ -75,35 +47,28 @@ $dark-blue: #3c5471;
   }
 
   .monthly {
-    input[type="radio"] {
-      margin-right: 5px;
+    &.day_of_month {
+      height: 198px;
     }
-    .month-days-div, .month-week-days-div {
-      width: 240px;
+
+    &.day_of_week {
+      height: 165px;
     }
-    .monthlyOpts {
-      margin-bottom: 8px;
-      .day-of-week-radio {
-        margin-left: 5px;
-      }
-    }
-    margin-bottom: 3px;
-    li {
-      padding: 0px;
-      margin: 0px;
-    }
+
     ul.month-days {
+
       li {
         display: inline-block;
         background-color: $bg;
         color: $text;
         cursor: pointer;
-        width: 34px;
-        height: 28px;
-        padding: 3px;
+        width: 25px;
+        height: 20px;
+        padding: 5px;
         font-weight: bold;
         text-align: center;
-        border: 1px solid $dark-gray!important;
+        border: 1px solid $dark-gray;
+        float: left;
 
         &:last-child {
           width: 136px;
@@ -117,24 +82,29 @@ $dark-blue: #3c5471;
     }
 
     ul.month-week-days {
+      width: 259px;
+
       li {
         .week-days {
+
           li {
-            width: 28px;
-            height: 34px;
+            float: left;
+            width: 20px;
+            height: 20px;
             display: inline-block;
             background-color: $bg;
             color: $text;
             cursor: pointer;
+
             padding: 5px;
             font-weight: bold;
             text-align: center;
-            border: 1px solid $dark-gray!important;
+            border: 1px solid $dark-gray;
 
             &.week-index-title {
-              width: 38px;
+              width: 24px;
               background-color: $light-gray;
-              border: none!important;
+              border: none;
               font-weight: normal;
             }
 
@@ -148,31 +118,12 @@ $dark-blue: #3c5471;
     }
   }
 
-  .yearly {
-    .yearlyMonths, .yearlyDayOfMonth {
-      margin-top: 6px;
-    }
-    ul.year-months li.year-month {
-      display: inline-block;
-    }
-    ul.year-month-days li.year-month-day {
-      display: inline-block;
-    }
-    .year-months, .year-month-days {
-      li {
-        margin-right: 5px;
-      }
-    }
-    .year-month-days {
-      label {
-        min-width: 16px;
-      }
-    }
-    .year-months {
-      label {
-        min-width: 25px;
-      }
-    }
+  .yearly ul.year-months li.year-month {
+    display: inline-block;
+  }
+
+  .yearly ul.year-month-days li.year-month-day {
+    display: inline-block;
   }
 
   .actions {
@@ -192,16 +143,9 @@ $dark-blue: #3c5471;
     }
   }
 
-  .inline {
-    display: flex;
-    align-items: center;
-  }
-
   .recurEnd {
-    .recurEndsOpts {
-      .recurEndsOpt {
-        min-height: 29px;
-      }
+    .recurEndOptions {
+      display: inline-block;
     }
   }
 }
