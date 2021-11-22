@@ -1,116 +1,148 @@
 <div class="rrule-recurring-select">
-  <h3 ng-hide="compact">Repeat</h3>
 
-  <div class="frequency-controls">
-    <div class="frequency-type">
-      <span ng-show="dispStart">From {{ dispStart | date:'dd/MM/yy'}}. </span><span ng-show="compact">Repeat </span><select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required>
-      </select>
+  <div class="sessions rrs-toggle inline" ng-if="!simplifiedDaily">
+    <div class="sessionsLabel col1">
+      <label>Session(s)</label>
     </div>
-
-    <div class="interval">
-      Every <input type="text" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}(s):
+    <div class="sessionsOpts">
+      <div class="noSessionsLabel" data-ng-if="!hours || hours.length === 0">
+        <label>{{ noSessionsStr || "Not yet configured" }}</label>
+      </div>
+      <div data-ng-if="hours && hours.length > 0">
+        <ul>
+          <li ng-repeat="hour in hours" ng-click="toggleSelected(hour)" ng-class="{ selected: hour.selected }">
+            {{hour.name}}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
-  <div class="daily rrs-toggle" ng-if="selectedFrequency.type == 'day' && !simplifiedDaily">
-    <ul>
-      <li ng-repeat="hour in hours" ng-click="toggleSelected(hour)" ng-class="{ selected: hour.selected }">
-        {{hour.name}}
-      </li>
-    </ul>
+  <div class="frequency-controls inline">
+    <div class="frequency-type inline">
+      <div class="repeatLabel col1">
+        <label>Repeat</label>
+      </div>
+      <div class="repeatOpts">
+        <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required></select>
+      </div>
+    </div>
+    <div class="interval inline">
+      <div class="intervalLabel">
+        <label>Every</label>
+      </div>
+      <div class="intervalOpts">
+        <input type="number" min="1" max="99" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}{{ interval !== 1 ? "s" : "" }}
+      </div>
+    </div>
   </div>
 
-  <div class="weekly rrs-toggle" ng-if="selectedFrequency.type == 'week'">
-    <ul>
-      <li ng-repeat="day in weekDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
-        {{day.name}}
-      </li>
-    </ul>
+  <div class="weekly rrs-toggle inline" ng-if="selectedFrequency.type == 'week'">
+    <div class="weekDaysLabel col1">
+      <label>On day(s)</label>
+    </div>
+    <div class="weekDaysOpts">
+      <ul>
+        <li ng-repeat="day in weekDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
+          {{day.name}}
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == 'month'">
-    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_month')" value="day_of_month"/>Day of month
-    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week
-
-    <ul class="month-days">
-      <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }" ng-if="selectedMonthFrequency == 'day_of_month'">
-        {{day.day}}
-      </li>
-    </ul>
-
-    <ul class="month-week-days">
-      <li ng-repeat="week in monthWeeklyDays" ng-if="selectedMonthFrequency == 'day_of_week'">
-        <ul class="week-days">
-          <li class="week-index-title">{{$index + 1}}{{weekOrdinals[$index]}}</li>
-          <li ng-repeat="day in week" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
-            {{ day.name }}
+    <div class="monthlyOpts inline">
+      <div class="col1"></div>
+      <div>
+        <input type="radio" ng-model="selectedMonthFrequency" class="day-of-month-radio" ng-click="selectMonthFrequency('day_of_month')" value="day_of_month"/>Day of month
+        <input type="radio" ng-model="selectedMonthFrequency" class="day-of-week-radio" ng-click="selectMonthFrequency('day_of_week')" value="day_of_week"/>Day of week
+      </div>
+    </div>
+    <div class="monthDayOpts inline" ng-if="selectedMonthFrequency == 'day_of_month'">
+      <div class="col1"></div>
+      <div class="month-days-div">
+        <ul class="month-days">
+          <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
+            {{ day.day }}
           </li>
         </ul>
-      </li>
-    </ul>
+      </div>
+    </div>
+    <div class="monthWeekOpts inline" ng-if="selectedMonthFrequency == 'day_of_week'">
+      <div class="col1"></div>
+      <div class="month-week-days-div">      
+        <ul class="month-week-days">
+          <li ng-repeat="week in monthWeeklyDays">
+            <ul class="week-days">
+              <li class="week-index-title">{{$index + 1}}{{weekOrdinals[$index]}}</li>
+              <li ng-repeat="day in week" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">
+                {{ day.name }}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <div class="yearly" ng-if="selectedFrequency.type == 'year'">
-    <label for="yearMonth">Months: </label>
-    <ul class='year-months'>
-      <li ng-repeat="yearMonth in yearMonths" class="year-month">
-        <input type="checkbox" value="yearMonth.value" ng-checked="yearMonth.selected" ng-click="toggleSelected(yearMonth)" id="year-month-{{yearMonth.value}}">
-        <label for="year-month-{{yearMonth.value}}">{{ yearMonth.name }}</label>
-      </li>
-    </ul>
-    <!-- <select name="yearMonth" ng-model="selectedYearMonth" ng-options="yearMonth as yearMonth.name for yearMonth in yearMonths track by yearMonth.value" ng-change="calculateRRule()" required></select> -->
-    <br />
-    <label for="yearMonthDay">Day of Month: </label>
-     <ul class='year-month-days'>
-      <li ng-repeat="monthDay in yearMonthDays" class="year-month-day">
-        <input type="checkbox" value="monthDay.value" ng-checked="monthDay.selected" ng-click="toggleSelected(monthDay)" id="year-month-day-{{monthDay.value}}">
-        <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>
-      </li>
-    </ul>
-  </div>
-
-  <div class="recurStarts" ng-if="showStart">
-    <div>
-      <label>Starts on</label>
+    <div class="yearlyMonths inline">
+      <div class="yearMonthsLabel col1">
+        <label>Month(s)</label>
+      </div>
+      <div>
+        <ul class='year-months'>
+          <li ng-repeat="yearMonth in yearMonths" class="year-month">
+            <input type="checkbox" value="yearMonth.value" ng-checked="yearMonth.selected" ng-click="toggleSelected(yearMonth)" id="year-month-{{yearMonth.value}}">
+            <label for="year-month-{{yearMonth.value}}">{{ yearMonth.name }}</label>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <input ng-model="recurrenceRule.options.dtstart" ui-date ui-date-format datepicker-popup-fix>
+    <div class="yearlyDayOfMonth inline">
+      <div class="yearDayOfMonthLabel col1">
+        <label>On day(s)</label>
+      </div>
+      <div>
+        <ul class='year-month-days'>
+          <li ng-repeat="monthDay in yearMonthDays" class="year-month-day">
+            <input type="checkbox" value="monthDay.value" ng-checked="monthDay.selected" ng-click="toggleSelected(monthDay)" id="year-month-day-{{monthDay.value}}">
+            <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <div class="recurEnd" ng-if="showEnd">
-    <div class="recurEndOptions">
-        <div class="recurEndsLabel">
-          <label>Ends</label>
+    <div class="recurEndOptions inline">
+      <div class="recurEndsLabel col1">
+        <label>Ends</label>
+      </div>
+      <div class="recurEndsOpts">
+        <div class="recurEndsOpt inline">
+          <div class="recurEndsOptLabel">
+            <label><input id="re-never" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label>
+          </div>          
         </div>
-        <div class="recurEndsOpts">
-          <div><label><input id="re-never" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('never')" value="never"> Never</label></div>
-          <div>
+        <div class="recurEndsOpt inline">
+          <div class="recurEndsOptLabel">
             <label><input id="re-count" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('after')" value="after"> After</label>
+          </div>
+          <div class="recurEndsOptFields">
             <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== 'after'" min="1"> occurrences
           </div>
-          <div>
+        </div>
+        <div class="recurEndsOpt inline">
+          <div class="recurEndsOptLabel">
             <label><input id="re-until" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule('on')" value="on"> On</label>
+          </div>
+          <div class="recurEndsOptFields">
             <datetimepicker ng-show="recurEnd.type === 'on'" ng-model="recurEnd.until" class="recurUntilDate re-input" show-meridian="false" date-format="dd/MM/yyyy" date-options="untilDateOptions" show-button-bar="false" ng-change="calculateRRule()"></datetimepicker>
             <datetimepicker ng-hide="recurEnd.type === 'on'" ng-model="fake.until"     class="recurUntilDate re-dummy" show-meridian="false" date-format=" "          date-options="untilDateOptions" disabled-date="true" readonly-date="true" readonly-time="true" disabled></datetimepicker>
-          </div>
+          </div>            
         </div>
-    </div>
-  </div>
-  <!--<pre>{{ recurrenceRule }}-->
-    <!--{{ weekDays | json }}-->
-  <!--</pre>-->
-  <div ng-if="!hideActions" class="actions">
-    <hr />
-
-    <div class="summary">
-      Summary: {{selectedFrequency.name}}
-      <div class="description">
-        {{ recurrenceRule.toText() }}
       </div>
     </div>
-
-    <div class="button ok" ng-if="showButtons" ng-click="okClick()">Ok</div>
-    <div class="button cancel" ng-if="showButtons" ng-click="cancelClick()">Cancel</div>
   </div>
 </div>

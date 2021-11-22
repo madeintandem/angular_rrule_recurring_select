@@ -1,4 +1,4 @@
-angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBootstrapDateTime",]).directive('rruleRecurringSelect', [function() {
+angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBootstrapDateTime", ]).directive('rruleRecurringSelect', ["$timeout", function($timeout) {
   return {
     restrict: 'E',
     scope: {
@@ -11,6 +11,7 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
     link: function(scope, elem, attrs) {
 
       var MS_IN_DAY = 1000 * 60 * 60 * 24;
+      var programaticChange = false;
 
       scope.init = function() {
         scope.showStart = typeof attrs['showStart'] !== "undefined";
@@ -32,9 +33,9 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         }
         if(!_.isEmpty(scope.rule)) {
           scope.parseRule(scope.rule);
-        }
-        else
+        } else {
           scope.calculateRRule();
+        }          
       };
 
       scope.initFrequencies = function() {
@@ -80,18 +81,34 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         });
       };
 
-      scope.resetData = function() {
+      scope.initHours = function () {
         var hoursFunc = attrs['hoursFunc'] || 'hoursOfDay';
+        const wasHours = scope.hours;
+        const hours = scope[hoursFunc]();
+        scope.hours = angular.copy(hours);
+        if (wasHours) {
+          for (const wasHour of wasHours) {
+            if (wasHour.selected && wasHour.id) {
+              const hour = scope.hours.find((h) => h.id === wasHour.id);
+              if (hour) {
+                hour.selected = true;
+              }
+            }
+          }
+        }
+      }
+
+      scope.resetData = function() {
         scope.weekStart = attrs['weekStartDay'] || 'SU';
-        scope.hours = scope[hoursFunc]();
         scope.defaultUntil = attrs['defaultUntil'];
         scope.weekDays = scope.daysOfWeek();
+        scope.initHours();
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
-        scope.initYearlyMonths();
+        scope.initYearlyMonths();  
         scope.selectedYearMonth = 1;
         scope.selectedYearMonthDay = 1;
-        scope.interval = '';
+        scope.interval = 1;
       };
 
       scope.daysOfWeek = function() {
@@ -148,7 +165,9 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
 
       scope.selectMonthFrequency = function(monthFrequency) {
         scope.selectedMonthFrequency = monthFrequency;
-        scope.resetData();
+        // Don't do this, else we'll lose our selections from the 'other' mode.  It's ok to keep selections
+        // from both modes and simply use the ones that apply to the currently-selected mode.
+        //scope.resetData();
         scope.calculateRRule();
       };
 
@@ -231,87 +250,96 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
             scope.calculateYearlyRRule(recurEndObj);
         }
 
-        if(!_.isUndefined(scope.rule))
+        if(!_.isUndefined(scope.rule)) {
+          programaticChange = true;
           scope.rule = scope.recurrenceRule.toString();
+          $timeout(() => {
+            // let the watch on scope.rule fire before we reset this variable so it will know that 
+            // it has detected a programatic rule change
+            programaticChange = false;
+          });
+        }          
       };
 
       scope.calculateInterval = function() {
         var interval = parseInt(scope.interval);
-        if (!interval)
+        if (!interval) {
           interval = 1;
+        }
         return interval;
       };
 
+      function calculateRule(ruleOptions, recurEndObj, doHours) {
+        if (doHours) {
+          var selectedHours = _(scope.hours).filter(function(hour) {
+            return hour.selected;
+          }).map(function(v) { return v.value }).value();
+          if (selectedHours.length > 0) {
+            ruleOptions.byhour = selectedHours;
+            ruleOptions.byminute = ruleOptions.bysecond = 0;
+          }
+        }
+        ruleOptions.interval = scope.calculateInterval();
+        ruleOptions.wkst = RRule[scope.weekStart];
+
+        angular.extend(ruleOptions, recurEndObj);
+        
+        scope.recurrenceRule = new RRule(ruleOptions);
+      };
+
       scope.calculateHourlyRRule = function(recurEndObj) {
-        scope.recurrenceRule = new RRule(angular.extend({
+        var ruleOptions = {
           freq: RRule.HOURLY,
-          interval: scope.calculateInterval(),
-          wkst: RRule[scope.weekStart]
-        },recurEndObj));
+        };
+        calculateRule(ruleOptions, recurEndObj, false);
       };
 
       scope.calculateDailyRRule = function(recurEndObj) {
         var ruleOptions = {
           freq: RRule.DAILY,
-          interval: scope.calculateInterval(),
-          wkst: RRule[scope.weekStart]
         };
-
-        var selectedHours = _(scope.hours).filter(function(hour) {
-          return hour.selected;
-        }).map(function(v) { return v.value }).value();
-        if (selectedHours.length > 0) {
-          ruleOptions.byhour = selectedHours;
-          ruleOptions.byminute = ruleOptions.bysecond = 0;
-        }
-        angular.extend(ruleOptions,recurEndObj);
-        scope.recurrenceRule = new RRule(ruleOptions);
+        calculateRule(ruleOptions, recurEndObj, true);
       };
 
       scope.calculateWeeklyRRule = function(recurEndObj) {
         var selectedDays = _(scope.weekDays).filter(function(day) {
           return day.selected;
         }).map(function(v) { return v.value }).value();
-
-        scope.recurrenceRule = new RRule(angular.extend({
+        var ruleOptions = {
           freq: RRule.WEEKLY,
-          interval: scope.calculateInterval(),
-          wkst: RRule[scope.weekStart],
           byweekday: selectedDays
-        },recurEndObj));
+        }
+        calculateRule(ruleOptions, recurEndObj, true);
       };
 
       scope.calculateMonthlyRRule = function(recurEndObj) {
-        if(scope.selectedMonthFrequency == 'day_of_month')
+        if(scope.selectedMonthFrequency == 'day_of_month') {
           scope.calculateDayOfMonthRRule(recurEndObj);
-        else
+        } else {
           scope.calculateDayOfWeekRRule(recurEndObj);
+        }
       };
 
       scope.calculateDayOfMonthRRule = function(recurEndObj) {
         var selectedDays = _(scope.monthDays).filter(function(day) {
           return day.selected;
         }).map(function(v) { return v.value }).value();
-
-        scope.recurrenceRule = new RRule(angular.extend({
+        var ruleOptions = {
           freq: RRule.MONTHLY,
-          interval: scope.calculateInterval(),
-          wkst: RRule[scope.weekStart],
           bymonthday: selectedDays
-        },recurEndObj));
+        }
+        calculateRule(ruleOptions, recurEndObj, true);
       };
 
       scope.calculateDayOfWeekRRule = function(recurEndObj) {
         var selectedDays = _(scope.monthWeeklyDays).flatten().filter(function(day) {
           return day.selected;
         }).map(function(v) { return v.value }).value();
-
-        scope.recurrenceRule = new RRule(angular.extend({
+        var ruleOptions = {
           freq: RRule.MONTHLY,
-          interval: scope.calculateInterval(),
-          wkst: RRule[scope.weekStart],
           byweekday: selectedDays
-        }, recurEndObj));
+        }
+        calculateRule(ruleOptions, recurEndObj, true);
       };
 
       scope.calculateYearlyRRule = function(recurEndObj) {
@@ -326,16 +354,24 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         }).filter(function(day) {
           return day.selected;
         }).map(function(v) { return v.value }).value();
-
-        scope.recurrenceRule = new RRule(angular.extend({
+        var ruleOptions = {
           freq: RRule.YEARLY,
-          interval: scope.calculateInterval(),
           bymonth: selectedMonths,
           bymonthday: selectedDays
-        },recurEndObj));
+        }
+        calculateRule(ruleOptions, recurEndObj, true);
+      };
+
+      function initHours() {
+        var ruleSelectedHours = scope.recurrenceRule.options.byhour;
+
+        _.each(scope.hours, function(hour) {
+          hour.selected = (_.includes(ruleSelectedHours, hour.value));
+        });
       };
 
       scope.parseRule = function(rRuleString) {
+        rRuleString = rRuleString.replace("WKST=0", "WKST=MO");
         scope.recurrenceRule = RRule.fromString(rRuleString);
 
         scope.interval = scope.recurrenceRule.options.interval;
@@ -344,19 +380,21 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
           return frequency.rruleType == scope.recurrenceRule.options.freq;
         })[0];
 
+        initHours();
+
         switch(scope.selectedFrequency.type) {
-          case 'day':
-            scope.initFromDailyRule();
-            break;
           case 'week':
             scope.initFromWeeklyRule();
             break;
           case 'month':
             scope.initFromMonthlyRule();
             break;
+          case 'year':
+            scope.initFromYearlyRule();
+            break;
         }
 
-       scope.initFromRecurEndRule();
+        scope.initFromRecurEndRule();
       };
 
       scope.initFromRecurEndRule = function() {
@@ -378,14 +416,6 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         }
       };
 
-      scope.initFromDailyRule = function() {
-        var ruleSelectedHours = scope.recurrenceRule.options.byhour;
-
-        _.each(scope.hours, function(hour) {
-          hour.selected = (_.includes(ruleSelectedHours, hour.value));
-        });
-      };
-
       scope.initFromWeeklyRule = function() {
         var ruleSelectedDays = scope.recurrenceRule.options.byweekday;
 
@@ -394,11 +424,27 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         });
       };
 
+      scope.initFromYearlyRule = function() {
+        var ruleMonthDays = scope.recurrenceRule.options.bymonthday;
+        _.each(scope.yearMonthDays, function(monthDay) {
+          monthDay.selected = (_.includes(ruleMonthDays, monthDay.value));
+        });
+        if (scope.recurrenceRule.options.bynmonthday.length > 0 && scope.recurrenceRule.options.bynmonthday[0] == -1) {
+          scope.yearMonthDays[31].selected = true;
+        }
+
+        var ruleMonths = scope.recurrenceRule.options.bymonth;
+        _.each(scope.yearMonths, function(month) {
+          month.selected = (_.includes(ruleMonths, month.value));
+        });
+      }
+
       scope.initFromMonthlyRule = function() {
-        if(!_.isEmpty(scope.recurrenceRule.options.bymonthday) || !_.isEmpty(scope.recurrenceRule.options.bynmonthday))
+        if (!_.isEmpty(scope.recurrenceRule.options.bymonthday) || !_.isEmpty(scope.recurrenceRule.options.bynmonthday)) {
           scope.initFromMonthDays();
-        else if(!_.isEmpty(scope.recurrenceRule.options.bynweekday))
+        } else if (!_.isEmpty(scope.recurrenceRule.options.bynweekday)) {
           scope.initFromMonthWeekDays();
+        }          
       };
 
       scope.initFromMonthDays = function() {
@@ -409,13 +455,27 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
           weekDay.selected = (_.includes(ruleMonthDays, weekDay.value));
         });
 
-        if(scope.recurrenceRule.options.bynmonthday.length > 0 && scope.recurrenceRule.options.bynmonthday[0] == -1)
+        if (scope.recurrenceRule.options.bynmonthday.length > 0 && scope.recurrenceRule.options.bynmonthday[0] == -1) {
           scope.monthDays[31].selected = true;
+        }
       };
 
       scope.initFromMonthWeekDays = function() {
         var ruleWeekMonthDays = scope.recurrenceRule.options.bynweekday;
         scope.selectedMonthFrequency = 'day_of_week';
+
+        // reset them so the user's previous selections aren't retained when cancelling.
+        // this is excessive and it should be possible to set .selected values to false
+        // in the next loop, but I don't understand it and cannot step through so brute-
+        // force will have to do for now
+        scope.monthWeeklyDays = [];
+        _.times(4, function(index) {
+          var days = _.map(scope.daysOfWeek(), function(dayOfWeek){
+            dayOfWeek.value = dayOfWeek.value.nth(index + 1);
+            return dayOfWeek;
+          });
+          scope.monthWeeklyDays.push(days);
+        });
 
         _.each(ruleWeekMonthDays, function(ruleArray) {
           var dayIndex = ruleArray[0];
@@ -436,7 +496,12 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
       };
 
       scope.ruleChanged = function() {
-        if (!_.isEmpty(scope.rule)) {
+        if (!_.isEmpty(scope.rule) && !programaticChange) {
+          // we only need to do this for changes to the rule made externally to this module.  scope.rule
+          // will be changed by the calculateRRule(...) function as a result of various user inputs made
+          // internally, but in this case, we don't need to reinitialise the UI as it will already be in sync.
+          // (Generally, reinitialising the UI would be pointless yet harmless, but for Monthly mode
+          // it is actually destructive as it will lead to selections from the "other" mode being lost.)
           scope.parseRule(scope.rule);
         }
       };
@@ -445,9 +510,14 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         return scope.rule;
       };
 
+      scope.$on("reInitHours", function () {
+        scope.initHours();
+        scope.calculateRRule();
+      });
+
       scope.init();
     }
   }
 }]);
 
-angular.module('rrule.templates', []).run(['$templateCache', function($templateCache) {$templateCache.put('template/rrule_recurring_select.html','<div class="rrule-recurring-select">\n  <h3 ng-hide="compact">Repeat</h3>\n\n  <div class="frequency-controls">\n    <div class="frequency-type">\n      <span ng-show="dispStart">From {{ dispStart | date:\'dd/MM/yy\'}}. </span><span ng-show="compact">Repeat </span><select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required>\n      </select>\n    </div>\n\n    <div class="interval">\n      Every <input type="text" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}(s):\n    </div>\n  </div>\n\n  <div class="daily rrs-toggle" ng-if="selectedFrequency.type == \'day\' && !simplifiedDaily">\n    <ul>\n      <li ng-repeat="hour in hours" ng-click="toggleSelected(hour)" ng-class="{ selected: hour.selected }">\n        {{hour.name}}\n      </li>\n    </ul>\n  </div>\n\n  <div class="weekly rrs-toggle" ng-if="selectedFrequency.type == \'week\'">\n    <ul>\n      <li ng-repeat="day in weekDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">\n        {{day.name}}\n      </li>\n    </ul>\n  </div>\n\n  <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == \'month\'">\n    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency(\'day_of_month\')" value="day_of_month"/>Day of month\n    <input type="radio" ng-model="selectedMonthFrequency" ng-click="selectMonthFrequency(\'day_of_week\')" value="day_of_week"/>Day of week\n\n    <ul class="month-days">\n      <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }" ng-if="selectedMonthFrequency == \'day_of_month\'">\n        {{day.day}}\n      </li>\n    </ul>\n\n    <ul class="month-week-days">\n      <li ng-repeat="week in monthWeeklyDays" ng-if="selectedMonthFrequency == \'day_of_week\'">\n        <ul class="week-days">\n          <li class="week-index-title">{{$index + 1}}{{weekOrdinals[$index]}}</li>\n          <li ng-repeat="day in week" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">\n            {{ day.name }}\n          </li>\n        </ul>\n      </li>\n    </ul>\n  </div>\n\n  <div class="yearly" ng-if="selectedFrequency.type == \'year\'">\n    <label for="yearMonth">Months: </label>\n    <ul class=\'year-months\'>\n      <li ng-repeat="yearMonth in yearMonths" class="year-month">\n        <input type="checkbox" value="yearMonth.value" ng-checked="yearMonth.selected" ng-click="toggleSelected(yearMonth)" id="year-month-{{yearMonth.value}}">\n        <label for="year-month-{{yearMonth.value}}">{{ yearMonth.name }}</label>\n      </li>\n    </ul>\n    <!-- <select name="yearMonth" ng-model="selectedYearMonth" ng-options="yearMonth as yearMonth.name for yearMonth in yearMonths track by yearMonth.value" ng-change="calculateRRule()" required></select> -->\n    <br />\n    <label for="yearMonthDay">Day of Month: </label>\n     <ul class=\'year-month-days\'>\n      <li ng-repeat="monthDay in yearMonthDays" class="year-month-day">\n        <input type="checkbox" value="monthDay.value" ng-checked="monthDay.selected" ng-click="toggleSelected(monthDay)" id="year-month-day-{{monthDay.value}}">\n        <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>\n      </li>\n    </ul>\n  </div>\n\n  <div class="recurStarts" ng-if="showStart">\n    <div>\n      <label>Starts on</label>\n    </div>\n    <div>\n      <input ng-model="recurrenceRule.options.dtstart" ui-date ui-date-format datepicker-popup-fix>\n    </div>\n  </div>\n\n  <div class="recurEnd" ng-if="showEnd">\n    <div class="recurEndOptions">\n        <div class="recurEndsLabel">\n          <label>Ends</label>\n        </div>\n        <div class="recurEndsOpts">\n          <div><label><input id="re-never" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule(\'never\')" value="never"> Never</label></div>\n          <div>\n            <label><input id="re-count" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule(\'after\')" value="after"> After</label>\n            <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== \'after\'" min="1"> occurrences\n          </div>\n          <div>\n            <label><input id="re-until" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule(\'on\')" value="on"> On</label>\n            <datetimepicker ng-show="recurEnd.type === \'on\'" ng-model="recurEnd.until" class="recurUntilDate re-input" show-meridian="false" date-format="dd/MM/yyyy" date-options="untilDateOptions" show-button-bar="false" ng-change="calculateRRule()"></datetimepicker>\n            <datetimepicker ng-hide="recurEnd.type === \'on\'" ng-model="fake.until"     class="recurUntilDate re-dummy" show-meridian="false" date-format=" "          date-options="untilDateOptions" disabled-date="true" readonly-date="true" readonly-time="true" disabled></datetimepicker>\n          </div>\n        </div>\n    </div>\n  </div>\n  <!--<pre>{{ recurrenceRule }}-->\n    <!--{{ weekDays | json }}-->\n  <!--</pre>-->\n  <div ng-if="!hideActions" class="actions">\n    <hr />\n\n    <div class="summary">\n      Summary: {{selectedFrequency.name}}\n      <div class="description">\n        {{ recurrenceRule.toText() }}\n      </div>\n    </div>\n\n    <div class="button ok" ng-if="showButtons" ng-click="okClick()">Ok</div>\n    <div class="button cancel" ng-if="showButtons" ng-click="cancelClick()">Cancel</div>\n  </div>\n</div>\n');}]);
+angular.module('rrule.templates', []).run(['$templateCache', function($templateCache) {$templateCache.put('template/rrule_recurring_select.html','<div class="rrule-recurring-select">\r\n\r\n  <div class="sessions rrs-toggle inline" ng-if="!simplifiedDaily">\r\n    <div class="sessionsLabel col1">\r\n      <label>Session(s)</label>\r\n    </div>\r\n    <div class="sessionsOpts">\r\n      <div class="noSessionsLabel" data-ng-if="!hours || hours.length === 0">\r\n        <label>{{ noSessionsStr || "Not yet configured" }}</label>\r\n      </div>\r\n      <div data-ng-if="hours && hours.length > 0">\r\n        <ul>\r\n          <li ng-repeat="hour in hours" ng-click="toggleSelected(hour)" ng-class="{ selected: hour.selected }">\r\n            {{hour.name}}\r\n          </li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class="frequency-controls inline">\r\n    <div class="frequency-type inline">\r\n      <div class="repeatLabel col1">\r\n        <label>Repeat</label>\r\n      </div>\r\n      <div class="repeatOpts">\r\n        <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required></select>\r\n      </div>\r\n    </div>\r\n    <div class="interval inline">\r\n      <div class="intervalLabel">\r\n        <label>Every</label>\r\n      </div>\r\n      <div class="intervalOpts">\r\n        <input type="number" min="1" max="99" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}{{ interval !== 1 ? "s" : "" }}\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class="weekly rrs-toggle inline" ng-if="selectedFrequency.type == \'week\'">\r\n    <div class="weekDaysLabel col1">\r\n      <label>On day(s)</label>\r\n    </div>\r\n    <div class="weekDaysOpts">\r\n      <ul>\r\n        <li ng-repeat="day in weekDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">\r\n          {{day.name}}\r\n        </li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n\r\n  <div class="monthly {{selectedMonthFrequency}}" ng-if="selectedFrequency.type == \'month\'">\r\n    <div class="monthlyOpts inline">\r\n      <div class="col1"></div>\r\n      <div>\r\n        <input type="radio" ng-model="selectedMonthFrequency" class="day-of-month-radio" ng-click="selectMonthFrequency(\'day_of_month\')" value="day_of_month"/>Day of month\r\n        <input type="radio" ng-model="selectedMonthFrequency" class="day-of-week-radio" ng-click="selectMonthFrequency(\'day_of_week\')" value="day_of_week"/>Day of week\r\n      </div>\r\n    </div>\r\n    <div class="monthDayOpts inline" ng-if="selectedMonthFrequency == \'day_of_month\'">\r\n      <div class="col1"></div>\r\n      <div class="month-days-div">\r\n        <ul class="month-days">\r\n          <li ng-repeat="day in monthDays" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">\r\n            {{ day.day }}\r\n          </li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n    <div class="monthWeekOpts inline" ng-if="selectedMonthFrequency == \'day_of_week\'">\r\n      <div class="col1"></div>\r\n      <div class="month-week-days-div">      \r\n        <ul class="month-week-days">\r\n          <li ng-repeat="week in monthWeeklyDays">\r\n            <ul class="week-days">\r\n              <li class="week-index-title">{{$index + 1}}{{weekOrdinals[$index]}}</li>\r\n              <li ng-repeat="day in week" ng-click="toggleSelected(day)" ng-class="{ selected: day.selected }">\r\n                {{ day.name }}\r\n              </li>\r\n            </ul>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class="yearly" ng-if="selectedFrequency.type == \'year\'">\r\n    <div class="yearlyMonths inline">\r\n      <div class="yearMonthsLabel col1">\r\n        <label>Month(s)</label>\r\n      </div>\r\n      <div>\r\n        <ul class=\'year-months\'>\r\n          <li ng-repeat="yearMonth in yearMonths" class="year-month">\r\n            <input type="checkbox" value="yearMonth.value" ng-checked="yearMonth.selected" ng-click="toggleSelected(yearMonth)" id="year-month-{{yearMonth.value}}">\r\n            <label for="year-month-{{yearMonth.value}}">{{ yearMonth.name }}</label>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n    <div class="yearlyDayOfMonth inline">\r\n      <div class="yearDayOfMonthLabel col1">\r\n        <label>On day(s)</label>\r\n      </div>\r\n      <div>\r\n        <ul class=\'year-month-days\'>\r\n          <li ng-repeat="monthDay in yearMonthDays" class="year-month-day">\r\n            <input type="checkbox" value="monthDay.value" ng-checked="monthDay.selected" ng-click="toggleSelected(monthDay)" id="year-month-day-{{monthDay.value}}">\r\n            <label for="year-month-day-{{monthDay.value}}">{{ monthDay.day }}</label>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class="recurEnd" ng-if="showEnd">\r\n    <div class="recurEndOptions inline">\r\n      <div class="recurEndsLabel col1">\r\n        <label>Ends</label>\r\n      </div>\r\n      <div class="recurEndsOpts">\r\n        <div class="recurEndsOpt inline">\r\n          <div class="recurEndsOptLabel">\r\n            <label><input id="re-never" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule(\'never\')" value="never"> Never</label>\r\n          </div>          \r\n        </div>\r\n        <div class="recurEndsOpt inline">\r\n          <div class="recurEndsOptLabel">\r\n            <label><input id="re-count" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule(\'after\')" value="after"> After</label>\r\n          </div>\r\n          <div class="recurEndsOptFields">\r\n            <input type="number" ng-model="recurEnd.count" class="recurCount" ng-change="calculateRRule()" ng-disabled="recurEnd.type !== \'after\'" min="1"> occurrences\r\n          </div>\r\n        </div>\r\n        <div class="recurEndsOpt inline">\r\n          <div class="recurEndsOptLabel">\r\n            <label><input id="re-until" type="radio" ng-model="recurEnd.type" ng-change="calculateRRule(\'on\')" value="on"> On</label>\r\n          </div>\r\n          <div class="recurEndsOptFields">\r\n            <datetimepicker ng-show="recurEnd.type === \'on\'" ng-model="recurEnd.until" class="recurUntilDate re-input" show-meridian="false" date-format="dd/MM/yyyy" date-options="untilDateOptions" show-button-bar="false" ng-change="calculateRRule()"></datetimepicker>\r\n            <datetimepicker ng-hide="recurEnd.type === \'on\'" ng-model="fake.until"     class="recurUntilDate re-dummy" show-meridian="false" date-format=" "          date-options="untilDateOptions" disabled-date="true" readonly-date="true" readonly-time="true" disabled></datetimepicker>\r\n          </div>            \r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n');}]);
