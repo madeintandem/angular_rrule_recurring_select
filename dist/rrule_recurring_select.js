@@ -26,6 +26,13 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         scope.resetData();
         scope.$watch(scope.currentRule, scope.ruleChanged);
         scope.dateOptions = {};
+        if (attrs.fngFldShowwhen) {
+          scope.showMe = function() {
+            return scope.$parent.$eval(attrs.fngFldShowwhen);
+          }
+        } else {
+          scope.showMe = function() { return true};
+        }
         var minUntil = attrs['minUntil'];
         if (minUntil) {
           scope.dateOptions.minDate = new Date(parseInt(minUntil));
@@ -83,12 +90,13 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
       scope.resetData = function() {
         var hoursFunc = attrs['hoursFunc'] || 'hoursOfDay';
         scope.weekStart = attrs['weekStartDay'] || 'SU';
-        scope.hours = scope[hoursFunc]();
+        const hours = scope[hoursFunc]();
+        scope.hours = angular.copy(hours);
         scope.defaultUntil = attrs['defaultUntil'];
         scope.weekDays = scope.daysOfWeek();
         scope.initMonthlyDays();
         scope.initMonthlyWeeklyDays();
-        scope.initYearlyMonths();
+        scope.initYearlyMonths();  
         scope.selectedYearMonth = 1;
         scope.selectedYearMonthDay = 1;
         scope.interval = '';
