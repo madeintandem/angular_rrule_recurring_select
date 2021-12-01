@@ -222,8 +222,8 @@ describe("ActivityChart Directive", function() {
         expect(directiveScope.initMonthlyWeeklyDays.called).to.be.true;
       });
 
-      it("resets the interval", function() {
-        expect(directiveScope.interval).to.eql('');
+      it("resets the interval (to daily)", function() {
+        expect(directiveScope.interval).to.eql(1);
       });
     });
 
@@ -292,8 +292,8 @@ describe("ActivityChart Directive", function() {
         expect(directiveScope.selectedMonthFrequency).to.equal('day_of_month');
       });
 
-      it("resets the data", function() {
-        expect(directiveScope.resetData.called).to.be.true;
+      it("does not reset the data", function() {
+        expect(directiveScope.resetData.called).to.not.be.true;
       });
 
       it("calculates the RRule", function() {
