@@ -520,7 +520,12 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string from RRule", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=DAILY;INTERVAL=1;WKST=SU;BYHOUR=10,17;BYSECOND=0;BYMINUTE=0');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=DAILY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYHOUR=10,17/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYSECOND=0/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYMINUTE=0/);
         });
       });
 
@@ -559,7 +564,10 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU;BYDAY=MO');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=WEEKLY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYDAY=MO/);
         });
       });
 
@@ -576,7 +584,10 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=1;WKST=SU;BYDAY=MO,TH');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=WEEKLY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYDAY=MO,TH/);
         });
       });
 
@@ -593,7 +604,10 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=WE');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=WEEKLY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=2/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYDAY=WE/);
         });
       });
     });
@@ -650,7 +664,10 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYMONTHDAY=3,10,21');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=MONTHLY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYMONTHDAY=3,10,21/);
         });
       });
 
@@ -665,7 +682,10 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYMONTHDAY=-1');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=MONTHLY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYMONTHDAY=-1/);
         });
       });
 
@@ -682,7 +702,10 @@ describe("ActivityChart Directive", function() {
         });
 
         it("has the correct iCal string", function() {
-          expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=3;WKST=SU;BYMONTHDAY=1,-1');
+          expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=MONTHLY/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=3/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+          expect(directiveScope.recurrenceRule.toString()).to.match(/BYMONTHDAY=1,-1/);
         });
       });
     });
@@ -711,7 +734,10 @@ describe("ActivityChart Directive", function() {
           });
 
           it("has the correct iCal string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYDAY=+2TU,+4TU');
+            expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=MONTHLY/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/BYDAY=\+2TU,\+4TU/);
           });
         });
 
@@ -727,7 +753,10 @@ describe("ActivityChart Directive", function() {
           });
 
           it("has the correct iCal string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=1;WKST=SU;BYDAY=+1SU,+2TU');
+            expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=MONTHLY/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=1/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/BYDAY=\+1SU,\+2TU/);
           });
         });
       });
@@ -749,7 +778,10 @@ describe("ActivityChart Directive", function() {
           });
 
           it("has the correct iCal string", function() {
-            expect(directiveScope.recurrenceRule.toString()).to.eql('FREQ=MONTHLY;INTERVAL=2;WKST=SU;BYDAY=+2MO,+4MO');
+            expect(directiveScope.recurrenceRule.toString()).to.match(/FREQ=MONTHLY/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/INTERVAL=2/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/WKST=SU/);
+            expect(directiveScope.recurrenceRule.toString()).to.match(/BYDAY=\+2MO,\+4MO/);
           });
         });
       });
