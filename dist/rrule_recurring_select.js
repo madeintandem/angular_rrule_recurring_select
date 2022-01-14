@@ -27,6 +27,13 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
         scope.resetData();
         scope.$watch(scope.currentRule, scope.ruleChanged);
         scope.dateOptions = {};
+        if (attrs.fngFldShowwhen) {
+          scope.showMe = function() {
+            return scope.$parent.$eval(attrs.fngFldShowwhen);
+          }
+        } else {
+          scope.showMe = function() { return true};
+        }
         var minUntil = attrs['minUntil'];
         if (minUntil) {
           scope.dateOptions.minDate = new Date(parseInt(minUntil));

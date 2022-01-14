@@ -1,8 +1,9 @@
-<div class="rrule-recurring-select">
+<div class="rrule-recurring-select" ng-show="showMe()">
 
   <div class="sessions rrs-toggle inline" ng-if="!noSessions">
     <div class="sessionsLabel col1">
-      <label>Session(s)</label>
+      <label data-ng-if="!hours">Session(s)</label>
+      <label data-ng-if="hours">Hour(s)</label>
     </div>
     <div class="sessionsOpts">
       <div class="noSessionsLabel" data-ng-if="!hours || hours.length === 0">

@@ -1,7 +1,7 @@
 {
   "name": "angular-rrule-recurring-select",
   "author": "Mark Chapman <support@reallycare.org>",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Recurrence editor",
   "repository": {
     "type": "git",
@@ -14,11 +14,11 @@
     "test": "node node_modules/karma/bin/karma start specs/karma.conf.js"
   },
   "dependencies": {
-    "angular": "^1.7.9",
+    "angular": "^1.8.2",
     "angular-mocks": "1.8.2",
     "angular-ui-bootstrap": "2.5.6",
     "fng-bootstrap-datetime": "^0.12.0-beta.170",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "rrule": "git://github.com/reallycare/rrule.git#master"
   },
