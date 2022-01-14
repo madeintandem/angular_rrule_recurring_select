@@ -1,9 +1,9 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var sass = require('gulp-sass')(require('sass'));
 var rename = require('gulp-rename');
 var util = require('gulp-util');
 var templateCache = require('gulp-angular-templatecache');
-var sass = require('gulp-sass')(require('sass'));
 
 gulp.task('scss', function() {
   return gulp.src(['lib/rrule_recurring_select.scss'])

@@ -1,7 +1,7 @@
 {
   "name": "angular-rrule-recurring-select",
   "author": "Mark Chapman <support@reallycare.org>",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Recurrence editor",
   "repository": {
     "type": "git",
@@ -10,34 +10,34 @@
   "scripts": {
     "prestart": "npm install",
     "pretest": "npm install",
-    "start": "python -m SimpleHTTPServer",
+    "start": "http-server",
     "test": "node node_modules/karma/bin/karma start specs/karma.conf.js"
   },
   "dependencies": {
     "angular": "^1.8.2",
     "angular-mocks": "1.8.2",
     "angular-ui-bootstrap": "2.5.6",
-    "fng-bootstrap-datetime": "^0.12.0-beta.168",
-    "lodash": "4.17.21",
+    "fng-bootstrap-datetime": "^0.12.0-beta.170",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "rrule": "git://github.com/reallycare/rrule.git#master"
   },
   "devDependencies": {
     "chai": "4.3.4",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "express-namespace": "~0.1.1",
     "gulp": "^4.0.2",
-    "gulp-angular-templatecache": "^3.0.0",
+    "gulp-angular-templatecache": "3.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.0.0",
+    "gulp-sass": "^5.1.0",
     "gulp-util": "^3.0.8",
     "http-server": "^14.0.0",
     "karma": "^6.3.9",
     "karma-chai": "~0.1.0",
     "karma-chrome-launcher": "3.1.0",
     "karma-expect": "^1.1.0",
-    "karma-firefox-launcher": "^2.1.2",
+    "karma-firefox-launcher": "2.1.2",
     "karma-jquery": "^0.2.4",
     "karma-mocha": "^2.0.1",
     "karma-mocha-debug": "0.1.2",
@@ -46,8 +46,8 @@
     "karma-safari-launcher": "^1.0.0",
     "karma-sinon": "^1.0.3",
     "mocha": "^9.1.3",
-    "node-sass": "^6.0.1",
-    "sass": "^1.43.4",
+    "node-sass": "^7.0.1",
+    "sass": "^1.45.2",
     "sinon": "^12.0.1"
   },
   "licence": "MIT"
