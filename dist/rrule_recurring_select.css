@@ -11,10 +11,32 @@
   list-style-type: none;
   padding: 0;
 }
-.rrule-recurring-select .frequency-type, .rrule-recurring-select .interval {
-  margin: 8px 0;
+.rrule-recurring-select label {
+  margin-bottom: 0px;
 }
-.rrule-recurring-select .weekly ul li, .rrule-recurring-select .daily ul li {
+.rrule-recurring-select ul, .rrule-recurring-select ol {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.rrule-recurring-select .frequency-type, .rrule-recurring-select .interval {
+  margin: 8px 0px 2px 0px;
+}
+.rrule-recurring-select .frequency-controls .intervalLabel {
+  margin-right: 5px;
+}
+.rrule-recurring-select div.col1, .rrule-recurring-select div.recurEndsOptLabel {
+  min-width: 75px;
+}
+.rrule-recurring-select .sessions .noSessionsLabel {
+  font-style: italic;
+}
+.rrule-recurring-select .weekly, .rrule-recurring-select .monthly {
+  margin-top: 6px;
+}
+.rrule-recurring-select .weekly ul, .rrule-recurring-select .sessions ul {
+  margin-bottom: 0px;
+}
+.rrule-recurring-select .weekly ul li, .rrule-recurring-select .sessions ul li {
   display: inline-block;
   background-color: #dddddd;
   color: #666666;
@@ -26,28 +48,40 @@
   text-align: center;
   border: 1px solid #BBBDBF;
 }
-.rrule-recurring-select .weekly ul li.selected, .rrule-recurring-select .daily ul li.selected {
+.rrule-recurring-select .weekly ul li.selected, .rrule-recurring-select .sessions ul li.selected {
   background-color: #32d0328c;
   color: #eeeeee;
 }
-.rrule-recurring-select .monthly.day_of_month {
-  height: 198px;
+.rrule-recurring-select .monthly {
+  margin-bottom: 3px;
 }
-.rrule-recurring-select .monthly.day_of_week {
-  height: 165px;
+.rrule-recurring-select .monthly input[type=radio] {
+  margin-right: 5px;
+}
+.rrule-recurring-select .monthly .month-days-div, .rrule-recurring-select .monthly .month-week-days-div {
+  width: 240px;
+}
+.rrule-recurring-select .monthly .monthlyOpts {
+  margin-bottom: 8px;
+}
+.rrule-recurring-select .monthly .monthlyOpts .day-of-week-radio {
+  margin-left: 5px;
+}
+.rrule-recurring-select .monthly li {
+  padding: 0px;
+  margin: 0px;
 }
 .rrule-recurring-select .monthly ul.month-days li {
   display: inline-block;
   background-color: #dddddd;
   color: #666666;
   cursor: pointer;
-  width: 25px;
-  height: 20px;
-  padding: 5px;
+  width: 34px;
+  height: 28px;
+  padding: 3px;
   font-weight: bold;
   text-align: center;
-  border: 1px solid #BBBDBF;
-  float: left;
+  border: 1px solid #BBBDBF !important;
 }
 .rrule-recurring-select .monthly ul.month-days li:last-child {
   width: 136px;
@@ -56,13 +90,9 @@
   background-color: #32d0328c;
   color: #eeeeee;
 }
-.rrule-recurring-select .monthly ul.month-week-days {
-  width: 259px;
-}
 .rrule-recurring-select .monthly ul.month-week-days li .week-days li {
-  float: left;
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 34px;
   display: inline-block;
   background-color: #dddddd;
   color: #666666;
@@ -70,23 +100,35 @@
   padding: 5px;
   font-weight: bold;
   text-align: center;
-  border: 1px solid #BBBDBF;
+  border: 1px solid #BBBDBF !important;
 }
 .rrule-recurring-select .monthly ul.month-week-days li .week-days li.week-index-title {
-  width: 24px;
+  width: 38px;
   background-color: #f6f6f6;
-  border: none;
+  border: none !important;
   font-weight: normal;
 }
 .rrule-recurring-select .monthly ul.month-week-days li .week-days li.selected {
   background-color: #32d0328c;
   color: #eeeeee;
 }
+.rrule-recurring-select .yearly .yearlyMonths, .rrule-recurring-select .yearly .yearlyDayOfMonth {
+  margin-top: 6px;
+}
 .rrule-recurring-select .yearly ul.year-months li.year-month {
   display: inline-block;
 }
 .rrule-recurring-select .yearly ul.year-month-days li.year-month-day {
   display: inline-block;
+}
+.rrule-recurring-select .yearly .year-months li, .rrule-recurring-select .yearly .year-month-days li {
+  margin-right: 5px;
+}
+.rrule-recurring-select .yearly .year-month-days label {
+  min-width: 16px;
+}
+.rrule-recurring-select .yearly .year-months label {
+  min-width: 25px;
 }
 .rrule-recurring-select .actions .button {
   text-align: center;
@@ -101,6 +143,10 @@
   clear: both;
   padding: 10px;
 }
-.rrule-recurring-select .recurEnd .recurEndOptions {
-  display: inline-block;
+.rrule-recurring-select .inline {
+  display: flex;
+  align-items: center;
+}
+.rrule-recurring-select .recurEnd .recurEndsOpts .recurEndsOpt {
+  min-height: 29px;
 }
