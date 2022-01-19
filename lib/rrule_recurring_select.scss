@@ -37,6 +37,12 @@ $dark-blue: #3c5471;
     }
   }
 
+  .interval {
+    input {
+      display: unset; // clear display="block" from form-control
+    }
+  }
+
   div.col1, div.recurEndsOptLabel {
     min-width: 75px;
   }
@@ -197,11 +203,23 @@ $dark-blue: #3c5471;
     align-items: center;
   }
 
-  .recurEnd {
-    .recurEndsOpts {
-      .recurEndsOpt {
+  .recurStart {
+    padding-top: 8px;
+  }
+
+  .recurEnd, .recurStart {
+    .recurEndsOpts, .recurStartsOpts {
+      .recurEndsOpt, .recurStartOpt {
         min-height: 29px;
       }
     }
+  }
+
+  .recurEndOptions {
+    padding-bottom: 8px;
+  };
+
+  .repeatOpts {
+    margin-left: -1px; // looks better slightly to the left so it lines up with the session buttons (if any)
   }
 }

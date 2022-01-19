@@ -2,8 +2,7 @@
 
   <div class="sessions rrs-toggle inline" ng-if="!noSessions">
     <div class="sessionsLabel col1">
-      <label data-ng-if="!hours">Session(s)</label>
-      <label data-ng-if="hours">Hour(s)</label>
+      <label>Session(s)</label>
     </div>
     <div class="sessionsOpts">
       <div class="noSessionsLabel" data-ng-if="!hours || hours.length === 0">
@@ -25,7 +24,7 @@
         <label>Repeat</label>
       </div>
       <div class="repeatOpts">
-        <select ng-model="selectedFrequency" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required></select>
+        <select ng-model="selectedFrequency" class="form-control input-sm" ng-options="frequency as frequency.name for frequency in frequencies" ng-change="freqChanged()" required></select>
       </div>
     </div>
     <div class="interval inline">
@@ -33,7 +32,7 @@
         <label>Every</label>
       </div>
       <div class="intervalOpts">
-        <input type="number" min="1" max="99" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}{{ interval !== 1 ? "s" : "" }}
+        <input type="number" class="form-control input-sm" min="1" max="99" ng-model="interval" ng-change="calculateRRule()" /> {{selectedFrequency.type}}{{ interval !== 1 ? "s" : "" }}
       </div>
     </div>
   </div>
@@ -112,6 +111,19 @@
           </li>
         </ul>
       </div>
+    </div>
+  </div>
+
+  <div class="recurStart" ng-if="showRecurStart()">
+    <div class="recurStartOptions inline">
+      <div class="recurStartLabel col1">
+        <label>Starts</label>
+      </div>
+      <div class="recurStartsOpts">
+        <div class="recurStartsOpt inline">
+          <datetimepicker ng-model="recurStart.date" class="recurStartDate re-input" show-meridian="false" date-format="dd/MM/yyyy" date-options="startDateOptions" show-button-bar="false" ng-change="recurStartChanged()"></datetimepicker>
+        </div>
+      </div>            
     </div>
   </div>
 

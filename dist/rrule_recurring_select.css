@@ -24,6 +24,9 @@
 .rrule-recurring-select .frequency-controls .intervalLabel {
   margin-right: 5px;
 }
+.rrule-recurring-select .interval input {
+  display: unset;
+}
 .rrule-recurring-select div.col1, .rrule-recurring-select div.recurEndsOptLabel {
   min-width: 75px;
 }
@@ -147,6 +150,15 @@
   display: flex;
   align-items: center;
 }
-.rrule-recurring-select .recurEnd .recurEndsOpts .recurEndsOpt {
+.rrule-recurring-select .recurStart {
+  padding-top: 8px;
+}
+.rrule-recurring-select .recurEnd .recurEndsOpts .recurEndsOpt, .rrule-recurring-select .recurEnd .recurEndsOpts .recurStartOpt, .rrule-recurring-select .recurEnd .recurStartsOpts .recurEndsOpt, .rrule-recurring-select .recurEnd .recurStartsOpts .recurStartOpt, .rrule-recurring-select .recurStart .recurEndsOpts .recurEndsOpt, .rrule-recurring-select .recurStart .recurEndsOpts .recurStartOpt, .rrule-recurring-select .recurStart .recurStartsOpts .recurEndsOpt, .rrule-recurring-select .recurStart .recurStartsOpts .recurStartOpt {
   min-height: 29px;
+}
+.rrule-recurring-select .recurEndOptions {
+  padding-bottom: 8px;
+}
+.rrule-recurring-select .repeatOpts {
+  margin-left: -1px;
 }
