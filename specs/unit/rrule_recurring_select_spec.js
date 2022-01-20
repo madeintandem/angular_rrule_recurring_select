@@ -1,4 +1,4 @@
-describe("ActivityChart Directive", function() {
+describe("rrule_recurring_select Directive", function() {
   var scope, element, directiveScope, compile, httpBackend, rootScope;
 
   var scopedApp = angular.module('testApp', ['rruleRecurringSelect']);
