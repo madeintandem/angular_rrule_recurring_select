@@ -404,16 +404,6 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
       scope.parseRule = function(rRuleString) {
         rRuleString = rRuleString.replace("WKST=0", "WKST=MO");
         scope.recurrenceRule = RRule.fromString(rRuleString);
-        if (!rRuleString.includes("DTSTART")) {
-          programaticChange = true;
-          setDefaultRecurStart();
-          $timeout(() => {
-            // let the watch on scope.rule fire before we reset this variable so it will know that 
-            // it has detected a programatic rule change
-            programaticChange = false;
-          });
-          scope.recurStartDirty = false;
-        }
 
         scope.interval = scope.recurrenceRule.options.interval;
 
@@ -437,6 +427,17 @@ angular.module('rruleRecurringSelect', ["ui.bootstrap.datetimepicker", "fng.uiBo
 
         scope.initFromRecurStartRule();
         scope.initFromRecurEndRule();
+
+        if (!rRuleString.includes("DTSTART") && scope.showRecurStart()) {
+          programaticChange = true;
+          setDefaultRecurStart();
+          $timeout(() => {
+            // let the watch on scope.rule fire before we reset this variable so it will know that 
+            // it has detected a programatic rule change
+            programaticChange = false;
+          });
+          scope.recurStartDirty = false;
+        }
       };
 
       scope.initFromRecurEndRule = function() {
