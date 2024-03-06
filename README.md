@@ -1,3 +1,6 @@
+# Deprecated
+**Please note that this repo is deprecated and is no longer being maintained.**
+
 angular_rrule_recurring_select
 ==============================
 
